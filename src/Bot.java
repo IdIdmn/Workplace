@@ -4,33 +4,33 @@ import java.util.LinkedList;
 public class Bot implements Player{
 
     private LinkedList<Character> aimSymbols = new LinkedList<>();
-    private HashMap<Character, Unit> Team = new HashMap<>();
+    private HashMap<Character, Unit> team = new HashMap<>();
 
     public void printTeamState(){
         System.out.println();
         System.out.println("Вражеская команда: ");
-        for (Character symbol : Team.keySet()){
-            System.out.println(Team.get(symbol).toString());
+        for (Character symbol : team.keySet()){
+            System.out.println(team.get(symbol).toString());
         }
         System.out.println();
     }
 
     public HashMap<Character, Unit> getTeam(){
-        return Team;
+        return team;
     }
 
     public void fillTeam(int money){
         int name = 0;
         Unit chosenUnit;
         double unitIndex;
-        while (money >= 10 && Team.size() <= 10){
+        while (money >= 10 && team.size() <= 10){
             unitIndex = 0 + Math.random() * 9;
             chosenUnit = createUnit((int)unitIndex, Character.toChars(name + 97)[0]);
             while(money < chosenUnit.getCost()){
                 unitIndex = 0 + Math.random() * 9;
                 chosenUnit = createUnit((int)unitIndex, Character.toChars(name + 97)[0]);
             }
-            Team.put(chosenUnit.getSymbol(), chosenUnit);
+            team.put(chosenUnit.getSymbol(), chosenUnit);
             money -= chosenUnit.getCost();
             name++;
         }
@@ -69,7 +69,7 @@ public class Bot implements Player{
     public void putUnits(Battlefield field){
         int row = 0;
         double column;
-        for (Character symbol : Team.keySet()){
+        for (Character symbol : team.keySet()){
             column = field.getLength() * Math.random();
             while (!field.getCell(new int[]{row, (int) column}).isEmpty()){
                 column = field.getLength() * Math.random();
@@ -80,12 +80,12 @@ public class Bot implements Player{
     }
 
     public void playRound(Battlefield field, HashMap<Character,Unit> enemyTeam){
-        for (Character symbol : Team.keySet()) {
-            if(Team.get(symbol).canAttack(field, enemyTeam, aimSymbols)){
-                unitAttack(field, enemyTeam, aimSymbols, Team.get(symbol));
+        for (Character symbol : team.keySet()) {
+            if(team.get(symbol).canAttack(field, enemyTeam, aimSymbols)){
+                unitAttack(field, enemyTeam, aimSymbols, team.get(symbol));
             }
             else{
-                unitMove(field, Team.get(symbol));
+                unitMove(field, team.get(symbol));
             }
         }
     }
@@ -122,7 +122,7 @@ public class Bot implements Player{
     }
 
     public boolean isDefeated(){
-        return Team.isEmpty();
+        return team.isEmpty();
     }
 
 }

@@ -3,72 +3,72 @@ import java.util.LinkedList;
 
 public class Unit{
 
-    protected int HealthPoints;
-    protected int Damage;
-    protected int AttackRange;
-    protected int Defence;
-    protected int MoveRange;
-    protected int Cost;
-    protected char Symbol;
-    protected String Name;
+    protected int healthPoints;
+    protected int damage;
+    protected int attackRange;
+    protected int defence;
+    protected int moveRange;
+    protected int cost;
+    protected char symbol;
+    protected String name;
 
     Unit(){};
 
     public char getSymbol(){
-        return  Symbol;
+        return symbol;
     }
 
     public void setSymbol(char newSymbol){
-        Symbol = newSymbol;
+        symbol = newSymbol;
     }
 
     public String getName(){
-        return Name;
+        return name;
     }
 
     public int getMoveRange(){
-        return MoveRange;
+        return moveRange;
     }
 
     public int getDamage(){
-        return Damage;
+        return damage;
     }
 
     public int getCost(){
-        return Cost;
+        return cost;
     }
 
     public int getAttackRange(){
-        return AttackRange;
+        return attackRange;
     }
 
     public void takeDamage(int takenDamage){
-        if (takenDamage > Defence){
-            HealthPoints -= (takenDamage - Defence);
-            Defence = 0;
+        if (takenDamage > defence){
+            healthPoints -= (takenDamage - defence);
+            defence = 0;
         }
         else{
-            Defence -= takenDamage;
+            defence -= takenDamage;
         }
     }
 
     public void buff(int damageBuff, int attackRangeBuff, int moveRangeBuff){
-        Damage += damageBuff;
-        AttackRange += attackRangeBuff;
-        MoveRange += moveRangeBuff;
+        damage += damageBuff;
+        attackRange += attackRangeBuff;
+        moveRange += moveRangeBuff;
     }
 
     public boolean isDead(){
-        return (HealthPoints <= 0);
+        return (healthPoints <= 0);
     }
 
     public void death(HashMap<Character, Unit> team, Battlefield field){
-        field.remove(Symbol);
-        team.remove(Symbol, this);
+        field.remove(symbol);
+        team.remove(symbol, this);
     }
 
     public boolean isEnemy(char otherUnitSymbol){
-        if (Character.getNumericValue(Symbol) < 10) {
+        if (Character.getNumericValue(symbol) < 10) {
             return (Character.getNumericValue(otherUnitSymbol) >= 10);
         }
         return (Character.getNumericValue(otherUnitSymbol) < 10);
@@ -78,15 +78,15 @@ public class Unit{
         if (newPosition[0] < 0 || newPosition[0] >= field.getLength() || newPosition[1] < 0 || newPosition[1] >= field.getLength() || !field.getCell(newPosition).isAvailableToMove(this, field)){
             return false;
         }
-        field.remove(Symbol);
-        field.put(Symbol, newPosition);
+        field.remove(symbol);
+        field.put(symbol, newPosition);
         return true;
     }
 
-    public boolean canAttack(Battlefield field, HashMap<Character, Unit> team, LinkedList<Character> aimSymbols){
+    public boolean canAttack(Battlefield field, HashMap<Character, Unit> enemyTeam, LinkedList<Character> aimSymbols){
         boolean flag = false;
-        for (Character attackedUnitSymbol : team.keySet()){
-            if (field.getCell(field.getUnitPosition(attackedUnitSymbol)).isAvailableToAttack(AttackRange, field.getUnitPosition(Symbol))){
+        for (Character attackedUnitSymbol : enemyTeam.keySet()){
+            if (field.getCell(field.getUnitPosition(attackedUnitSymbol)).isAvailableToAttack(attackRange, field.getUnitPosition(symbol))){
                 aimSymbols.add(attackedUnitSymbol);
                 flag = true;
             }
@@ -95,12 +95,12 @@ public class Unit{
     }
 
     public void attack(Unit enemyUnit){
-        enemyUnit.takeDamage(Damage);
+        enemyUnit.takeDamage(damage);
     }
 
     @Override
     public String toString(){
-        return String.format("%s - Класс: %-24s | Дальность перемещения: %d | Дальность атаки: %d | Урон: %d | Здоровье: %2d | Защита: %d",  Symbol, Name, MoveRange, AttackRange, Damage, HealthPoints, Defence);
+        return String.format("%s - Класс: %-24s | Дальность перемещения: %d | Дальность атаки: %d | Урон: %d | Здоровье: %2d | Защита: %d", symbol, name, moveRange, attackRange, damage, healthPoints, defence);
     }
 
 }

@@ -1,14 +1,14 @@
 public class Cuirassier extends Horseman implements CanRide, CanStab{
 
     Cuirassier(char symbol){
-        HealthPoints = 50;
-        Damage = 2;
-        AttackRange = 1;
-        Defence = 7;
-        MoveRange = 5;
-        Cost = 23;
-        Symbol = symbol;
-        Name = "Кирасир";
+        healthPoints = 50;
+        damage = 2;
+        attackRange = 1;
+        defence = 7;
+        moveRange = 5;
+        cost = 23;
+        this.symbol = symbol;
+        name = "Кирасир";
     }
 
 }

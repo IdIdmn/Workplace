@@ -37,9 +37,14 @@ public class User implements Player{
 
     public int chooseWay(){
         Scanner in = new Scanner(System.in);
-        System.out.println("\nКакое действие вы желаете совершить? 1 - Перемещение | 2 - Атака | 3 - Пропустить ход");
+        System.out.println("\nКакое действие вы желаете совершить?\n1 - Перемещение | 2 - Атака | 3 - Пропустить ход");
         System.out.print("Введите номер соответствующего действия: ");
-        return in.nextInt();
+        try {
+            return in.nextInt();
+        }
+        catch (Exception e){
+            return 0;
+        }
     }
 
     public void fillTeam(boolean randomBuy, int money){
@@ -148,13 +153,14 @@ public class User implements Player{
         for (Character symbol : Team.keySet()) {
             System.out.println("\n\nХод юнита " + Team.get(symbol).toString());
             chosenWay = chooseWay();
+            while(chosenWay > 3 || chosenWay < 1){
+                System.out.println("\nБыл выбран символ, не соответствующий ни одной из предложенных опций.");
+                chosenWay = chooseWay();
+            }
             if (chosenWay != 3) {
                 while ((chosenWay == 1) ? !unitMove(field, Team.get(symbol)) : !unitAttack(field, enemyTeam, AimSymbols, Team.get(symbol))) {
                     chosenWay = chooseWay();
                     System.out.println();
-                    if (chosenWay == 3) {
-                        break;
-                    }
                 }
             }
         }
@@ -197,7 +203,7 @@ public class User implements Player{
             System.out.println("Атакует союзный юнит: " + attackingUnit.toString());
             System.out.println("\nДля атаки доступны: ");
             for (Character enemyUnitSymbol : aimSymbols){
-                System.out.println( enemyTeam.get(enemyUnitSymbol).toString());
+                System.out.println(enemyTeam.get(enemyUnitSymbol).toString());
             }
             System.out.print("\nВведите имя вражеского юнита, которого следут атаковать: ");
             char enemyUnitSymbol = in.next().charAt(0);

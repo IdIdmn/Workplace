@@ -1,14 +1,14 @@
 public class ShortbowArcher extends Archer implements CanWalk, CanShoot{
 
     ShortbowArcher(char symbol){
-        HealthPoints = 25;
-        Damage = 3;
-        AttackRange = 3;
-        Defence = 4;
-        MoveRange = 4;
-        Cost = 19;
-        Symbol = symbol;
-        Name = "Стрелок с коротким луком";
+        healthPoints = 25;
+        damage = 3;
+        attackRange = 3;
+        defence = 4;
+        moveRange = 4;
+        cost = 19;
+        this.symbol = symbol;
+        name = "Стрелок с коротким луком";
     }
 
 }

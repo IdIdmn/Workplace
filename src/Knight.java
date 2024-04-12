@@ -1,14 +1,14 @@
 public class Knight extends Horseman implements CanRide, CanStab{
 
     Knight(char symbol){
-        HealthPoints = 30;
-        Damage = 5;
-        AttackRange = 1;
-        Defence = 3;
-        MoveRange = 6;
-        Cost = 20;
-        Symbol = symbol;
-        Name = "Рыцарь";
+        healthPoints = 30;
+        damage = 5;
+        attackRange = 1;
+        defence = 3;
+        moveRange = 6;
+        cost = 20;
+        this.symbol = symbol;
+        name = "Рыцарь";
     }
 
 }

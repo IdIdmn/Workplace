@@ -1,14 +1,14 @@
 public class CrossbowArcher extends Archer implements CanWalk, CanShoot{
 
     CrossbowArcher(char symbol){
-        HealthPoints = 40;
-        Damage = 7;
-        AttackRange = 6;
-        Defence = 3;
-        MoveRange = 2;
-        Cost = 23;
-        Symbol = symbol;
-        Name = "Арбалетчик";
+        healthPoints = 40;
+        damage = 7;
+        attackRange = 6;
+        defence = 3;
+        moveRange = 2;
+        cost = 23;
+        this.symbol = symbol;
+        name = "Арбалетчик";
     }
 
 }

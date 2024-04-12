@@ -1,52 +1,52 @@
 public class Cell {
 
-    private char Symbol;
-    private int[] Position;
+    private char symbol;
+    private int[] position;
 
     Cell(char symbol, int[] position){
-        Symbol = symbol;
-        Position = position;
+        this.symbol = symbol;
+        this.position = position;
+    }
+
+    Cell(Cell newCell){
+        symbol = newCell.getSymbol();
+        position = newCell.getPosition();
     }
 
     public char getSymbol(){
-        return Symbol;
+        return symbol;
+    }
+
+    public int[] getPosition(){
+        return position;
     }
 
     public void setSymbol(char newSymbol){
-        Symbol = newSymbol;
+        symbol = newSymbol;
     }
 
-    public double getMultiplier(Unit unit){
+    public double getMultiplier(Unit unit, Obstacle obstacle){
         if (unit instanceof Walker){
-            if (Symbol == '.') return 1.0;
-            else if (Symbol == '#') return 1.5;
-            else if (Symbol == '@') return 2.0;
-            else return 1.2;
+            return obstacle.getWalkerFine();
         }
         else if (unit instanceof Archer){
-            if (Symbol == '.') return 1.0;
-            else if (Symbol == '#') return 1.8;
-            else if (Symbol == '@') return 2.2;
-            else return 1;
+            return obstacle.getArcherFine();
         }
         else{
-            if (Symbol == '.') return 1.0;
-            else if (Symbol == '#') return 2.2;
-            else if (Symbol == '@') return 1.2;
-            else return 1.5;
+            return obstacle.getHorsemanFine();
         }
     }
 
     public boolean isUnit(){
-        return (Symbol != '.' && Symbol != '#' && Symbol != '@' && Symbol != '!');
+        return (Character.isDigit(symbol) || Character.isLetter(symbol));
     }
 
     public boolean isEmpty(){
-        return (Symbol == '.');
+        return (symbol == '.');
     }
 
     public double calculateDistanceToOtherCell(int[] otherCellPosition){
-        return Math.sqrt(Math.pow((Position[0] - otherCellPosition[0]), 2) + Math.pow((Position[1] - otherCellPosition[1]), 2));
+        return Math.sqrt(Math.pow((position[0] - otherCellPosition[0]), 2) + Math.pow((position[1] - otherCellPosition[1]), 2));
     }
 
     public boolean isAvailableToAttack(int attackingUnitAttackRange, int[] attackingUnitPosition){
@@ -54,9 +54,10 @@ public class Cell {
     }
 
     public boolean isAvailableToMove(Unit unit, Battlefield field){
-        int moveRow = Position[0], moveColumn = Position[1];
-        if(field.getCell(Position).isEmpty()) {
+        int moveRow = position[0], moveColumn = position[1];
+        if(isEmpty()) {
             int unitRow = field.getUnitPosition(unit.getSymbol())[0], unitColumn = field.getUnitPosition(unit.getSymbol())[1];
+            Cell curCell;
             double distance = 0.0;
             if (unitRow == moveRow) {
                 if (unitColumn < moveColumn) {
@@ -64,7 +65,8 @@ public class Cell {
                         if (field.getCell(new int[] {unitRow, curColumn}).isUnit()) {
                             return false;
                         }
-                        distance += field.getCell(new int[] {unitRow, curColumn}).getMultiplier(unit);
+                        curCell = new Cell(field.getCell(new int[] {unitRow, curColumn}));
+                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
                     }
                 }
                 else {
@@ -72,7 +74,8 @@ public class Cell {
                         if (field.getCell(new int[] {unitRow, curColumn}).isUnit()) {
                             return false;
                         }
-                        distance += field.getCell(new int[] {unitRow, curColumn}).getMultiplier(unit);
+                        curCell = new Cell(field.getCell(new int[] {unitRow, curColumn}));
+                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
                     }
                 }
                 return (distance <= (double) unit.getMoveRange());
@@ -83,7 +86,8 @@ public class Cell {
                         if (field.getCell(new int[] {curRow, unitColumn}).isUnit()) {
                             return false;
                         }
-                        distance += field.getCell(new int[] {curRow, unitColumn}).getMultiplier(unit);
+                        curCell = new Cell(field.getCell(new int[] {curRow, unitColumn}));
+                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
                     }
                 }
                 else {
@@ -91,7 +95,8 @@ public class Cell {
                         if (field.getCell(new int[] {curRow, unitColumn}).isUnit()) {
                             return false;
                         }
-                        distance += field.getCell(new int[] {curRow, unitColumn}).getMultiplier(unit);
+                        curCell = new Cell(field.getCell(new int[] {curRow, unitColumn}));
+                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
                     }
                 }
                 return (distance <= (double) unit.getMoveRange());
@@ -103,7 +108,8 @@ public class Cell {
                             if (field.getCell(new int[] {unitRow - cellNum, unitColumn + cellNum}).isUnit()) {
                                 return false;
                             }
-                            distance += (2 - cellNum % 2) * field.getCell(new int[] {unitRow - cellNum, unitColumn + cellNum}).getMultiplier(unit);
+                            curCell = new Cell(field.getCell(new int[] {unitRow - cellNum, unitColumn + cellNum}));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
                         }
                         return (distance <= (double) unit.getMoveRange());
                     }
@@ -112,7 +118,8 @@ public class Cell {
                             if (field.getCell(new int[] {unitRow - cellNum, unitColumn - cellNum}).isUnit()) {
                                 return false;
                             }
-                            distance += (2 - cellNum % 2) * field.getCell(new int[] {unitRow - cellNum, unitColumn - cellNum}).getMultiplier(unit);
+                            curCell = new Cell(field.getCell(new int[] {unitRow - cellNum, unitColumn - cellNum}));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
                         }
                     }
                 }
@@ -122,7 +129,8 @@ public class Cell {
                             if (field.getCell(new int[] {unitRow + cellNum, unitColumn + cellNum}).isUnit()) {
                                 return false;
                             }
-                            distance += (2 - cellNum % 2) * field.getCell(new int[] {unitRow + cellNum, unitColumn + cellNum}).getMultiplier(unit);
+                            curCell = new Cell(field.getCell(new int[] {unitRow + cellNum, unitColumn + cellNum}));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
                         }
                     }
                     else{
@@ -130,7 +138,8 @@ public class Cell {
                             if (field.getCell(new int[] {unitRow + cellNum, unitColumn - cellNum}).isUnit()) {
                                 return false;
                             }
-                            distance += (2 - cellNum % 2) * field.getCell(new int[] {unitRow + cellNum, unitColumn - cellNum}).getMultiplier(unit);
+                            curCell = new Cell(field.getCell(new int[] {unitRow + cellNum, unitColumn - cellNum}));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
                         }
                     }
                 }

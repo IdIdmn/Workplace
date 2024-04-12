@@ -18,27 +18,27 @@ public class Weather {
             startClearWeather(game);
             if ((int) weatherNum == 0) {
                 startRain(game);
-                System.out.print("Начался ливень.");
+                System.out.print("Небеса разверзлись, обрушив на головы путников настоящий водопад. Стрелки оказались беспомощны перед беснующейся природой.");
             }
             else if ((int) weatherNum == 1) {
                 startSnowing(game);
-                System.out.print("Начался снегопад.");
+                System.out.print("Леденящий ветер без конца усиливает свой натиск, заметая снегом все тропинки. Лошади начинают вязнуть в растущих на глазах сугробах.");
             }
             else if ((int) weatherNum == 2) {
                 startDrought(game);
-                System.out.print("Началась засуха.");
+                System.out.print("Последние капли влаги были беспощадно высушены палящим солнцем. Утомлённые путники с трудом продожают передвигать ногами по раскалённой почве.");
             }
             else if((int)weatherNum == 3){
                 startFog(game);
-                System.out.print("На поле боя опустился густой туман.");
+                System.out.print("Беспроглядная белая мгла опустилась на поле боя. Каждый взмах меча даётся воинам с огромным трудом, будто само пространство вокрут противится движению лезвия.");
             }
             else {
-                if(roundsRemain == 0) System.out.print("Настала ясная погода.");
+                if(roundsRemain == 0) System.out.print("Боги смилостивились над вами, разогнав непогоду.");
             }
         }
         else if ((int) weatherNum == 4) {
             startClearWeather(game);
-            System.out.print("Настала ясная погода.");
+            System.out.print("Боги смилостивились над вами, разогнав непогоду.");
         }
         System.out.print("\u001B[0m\n");
     }

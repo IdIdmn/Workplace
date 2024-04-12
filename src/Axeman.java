@@ -1,14 +1,14 @@
 public class Axeman extends Walker implements CanWalk, CanStab{
 
     Axeman(char symbol){
-        HealthPoints = 45;
-        Damage = 9;
-        AttackRange = 1;
-        Defence = 3;
-        MoveRange = 4;
-        Cost = 20;
-        Symbol = symbol;
-        Name = "Берсерк";
+        healthPoints = 45;
+        damage = 9;
+        attackRange = 1;
+        defence = 3;
+        moveRange = 4;
+        cost = 20;
+        this.symbol = symbol;
+        name = "Берсерк";
     }
 
 }
