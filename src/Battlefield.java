@@ -2,7 +2,7 @@ import java.util.HashMap;
 
 public class Battlefield{
 
-    private final int Length = 15, amountOfObstacles = Length * 2 / 3;
+    private final int Length = 5, amountOfObstacles = Length * 2 / 3;
     private Cell[][] Field = new Cell[Length][Length];
     private final char[] Obstacles = {'#', '@', '!'};
     HashMap<Character, int[]> UnitPositions = new HashMap<>();
@@ -40,9 +40,9 @@ public class Battlefield{
     public void putObstacles(){
         double row, column, obstacleIndex;
         for (int i = 0; i < amountOfObstacles; i++){
-            row = 1 + Math.random() * 12; column = 0 + Math.random() * 14;
+            row = 1 + Math.random() * (Length - 3); column = 0 + Math.random() * (Length - 1);
             while (!Field[(int)row][(int)column].isEmpty()){
-                row = 1 + Math.random() * 12; column = 0 + Math.random() * 14;
+                row = 1 + Math.random() * (Length - 3); column = 0 + Math.random() * (Length - 1);
             }
             obstacleIndex = 0 + 3 * Math.random();
             Field[(int)row][(int)column].setSymbol(Obstacles[(int)obstacleIndex]);

@@ -5,7 +5,7 @@ public class Game {
     private Battlefield Field = new Battlefield();
     private User Player = new User();
     private Bot EnemyPlayer = new Bot();
-    private int amountOfMoney = 50;
+    private int amountOfMoney = 23;
 
     public User getPlayer(){
         return Player;

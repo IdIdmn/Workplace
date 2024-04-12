@@ -1,20 +1,20 @@
 public class Weather {
 
     private static boolean isRaining, isSnowing, isDrought, isFoggy;
-    private static int RoundsRemain;
+    private static int roundsRemain;
 
     Weather(){
         isRaining = false;
         isSnowing = false;
         isDrought = false;
         isFoggy = false;
-        RoundsRemain = 0;
+        roundsRemain = 0;
     }
 
     public void randomWeather(Game game) {
         System.out.print("\u001B[34m");
         double weatherNum = 5 * Math.random();
-        if (RoundsRemain <= 0) {
+        if (roundsRemain <= 0) {
             startClearWeather(game);
             if ((int) weatherNum == 0) {
                 startRain(game);
@@ -33,10 +33,10 @@ public class Weather {
                 System.out.print("На поле боя опустился густой туман.");
             }
             else {
-                if(RoundsRemain == 0) System.out.print("Настала ясная погода.");
+                if(roundsRemain == 0) System.out.print("Настала ясная погода.");
             }
         }
-        else if ((int) weatherNum == 3) {
+        else if ((int) weatherNum == 4) {
             startClearWeather(game);
             System.out.print("Настала ясная погода.");
         }
@@ -44,7 +44,7 @@ public class Weather {
     }
 
     public void decreaseRemain(){
-        RoundsRemain--;
+        roundsRemain--;
     }
 
     public void startClearWeather(Game game){
@@ -67,7 +67,7 @@ public class Weather {
                 player.getTeam().get(symbol).buff(0,-3,0);
             }
         }
-        RoundsRemain = 2;
+        roundsRemain = 2;
         isRaining = true;
     }
 
@@ -84,7 +84,7 @@ public class Weather {
                 player.getTeam().get(symbol).buff(0,0,-2);
             }
         }
-        RoundsRemain = 2;
+        roundsRemain = 2;
         isSnowing = true;
     }
 
@@ -101,7 +101,7 @@ public class Weather {
                 player.getTeam().get(symbol).buff(0,0,-1);
             }
         }
-        RoundsRemain = 2;
+        roundsRemain = 2;
         isDrought = true;
     }
 
@@ -118,7 +118,7 @@ public class Weather {
                 player.getTeam().get(symbol).buff(-2,0,0);
             }
         }
-        RoundsRemain = 2;
+        roundsRemain = 2;
         isFoggy = true;
     }
 

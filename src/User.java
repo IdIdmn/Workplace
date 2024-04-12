@@ -115,13 +115,13 @@ public class User implements Player{
     }
 
     public void putUnits(Battlefield field , boolean randomPlace){
-        int row = 14;
+        int row = field.getLength() - 1;
         if (randomPlace){
             double column;
             for (Character symbol : Team.keySet()){
-                column = 0 + 14 * Math.random();
+                column = field.getLength() * Math.random();
                 while (!field.getCell(new int[]{row, (int) column}).isEmpty()){
-                    column = 0 + 14 * Math.random();
+                    column = field.getLength() * Math.random();
                 }
                 field.put(symbol, new int[] {row, (int)column});
             }
