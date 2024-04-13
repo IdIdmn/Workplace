@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -7,6 +8,49 @@ public class User implements Player, Serializable {
 
     private LinkedList<Character> AimSymbols = new LinkedList<>();
     private HashMap<Character, Unit> Team = new HashMap<>();
+    private int money;
+    private int[] resourses = {20, 30};
+    private double fineDecrease = 0;
+    private Town town = new Town();
+    private ArrayList<Unit> addedUnits = new ArrayList<>();
+
+    public int getMoney() {
+        return money;
+    }
+
+    public ArrayList<Unit> getAddedUnits() {
+        return addedUnits;
+    }
+
+    User(int money){
+        this.money = money;
+    }
+
+    public Town getTown() {
+        return town;
+    }
+
+    public int[] getResourses() {
+        return resourses;
+    }
+
+    @Override
+    public double getFineDecrease() {
+        return fineDecrease;
+    }
+
+    public void decreaseFines(double num){
+        fineDecrease += num;
+    }
+
+    public void earnResources(int earnedWood, int earnedRocks){
+        resourses[0] += earnedWood;
+        resourses[1] += earnedRocks;
+    }
+
+    public void earnMoney(int earnedMoney){
+        money += earnedMoney;
+    }
 
     public void printTeamState(){
         System.out.println();
@@ -48,16 +92,16 @@ public class User implements Player, Serializable {
         }
     }
 
-    public void fillTeam(boolean randomBuy, int money){
+    public void fillTeam(boolean randomBuy){
         int name = 0;
         Unit chosenUnit;
         if (randomBuy){
             double unitIndex;
             while (money >= 10 && Team.size() <= 10){
-                unitIndex = 0 + Math.random() * 9;
+                unitIndex = 0 + Math.random() * (9 + addedUnits.size());
                 chosenUnit = createUnit((int)unitIndex,Character.toChars(name + 48)[0]);
                 while(money < chosenUnit.getCost()){
-                    unitIndex = 0 + Math.random() * 9;
+                    unitIndex = 0 + Math.random() * (9 + addedUnits.size());
                     chosenUnit = createUnit((int)unitIndex, Character.toChars(name + 48)[0]);
                 }
                 Team.put(chosenUnit.getSymbol(), chosenUnit);
@@ -66,10 +110,11 @@ public class User implements Player, Serializable {
             }
         }
         else{
+            Scanner in = new Scanner(System.in);
             int unitIndex;
             System.out.println();
             System.out.println("Доступны следующие классы:");
-            for (int i = 1; i < 10; i++){
+            for (int i = 1; i < (10 + addedUnits.size()); i++){
                 chosenUnit = createUnit(i,' ');
                 System.out.println(i + chosenUnit.toString() + " | Цена: " + chosenUnit.getCost());
             }
@@ -86,6 +131,12 @@ public class User implements Player, Serializable {
                 Team.put(chosenUnit.getSymbol(), chosenUnit);
                 money -= chosenUnit.getCost();
                 name++;
+                if(money >= 10) {
+                    System.out.print("Хватит? (+/-): ");
+                    if (in.next().equals("+")) {
+                        return;
+                    }
+                }
             }
         }
     }
@@ -115,8 +166,12 @@ public class User implements Player, Serializable {
         else if (chosenUnitNumber == 8){
             return new Cuirassier(symbol);
         }
-        else{
+        else if(chosenUnitNumber == 9){
             return new HorsebackArcher(symbol);
+        }
+        else{
+            addedUnits.get(chosenUnitNumber - 10).setSymbol(symbol);
+            return addedUnits.get(chosenUnitNumber - 10);
         }
     }
 
@@ -162,6 +217,9 @@ public class User implements Player, Serializable {
                 while ((chosenWay == 1) ? !unitMove(field, Team.get(symbol)) : !unitAttack(field, enemyTeam, AimSymbols, Team.get(symbol))) {
                     chosenWay = chooseWay();
                     System.out.println();
+                    if(chosenWay == 3){
+                        break;
+                    }
                 }
             }
         }
@@ -171,7 +229,7 @@ public class User implements Player, Serializable {
     public boolean unitMove(Battlefield field, Unit unit){
         Display.makeGap();
         System.out.println("\tЯчейки доступные для перемещения:");
-        Display.displayMoveCells(unit, field);
+        Display.displayMoveCells(unit, field, fineDecrease);
         System.out.print("\nВернуться назад? (+/-): ");
         Scanner in = new Scanner(System.in);
         if (in.next().equals("+")) {
@@ -180,13 +238,14 @@ public class User implements Player, Serializable {
         System.out.print("\nВведите координаты для перемещения в формате 'ряд столбец' : ");
         int row = in.nextInt(), column = in.nextInt();
         System.out.println();
-        while (!unit.move(new int[]{row, column},field)){
+        while (!unit.move(new int[]{row, column},field,fineDecrease)){
             System.out.println("\nДанное поле не доступно для перемещения. Пожалуйста взгляните на карту и выберите одну из отмеченных клеток.");
             System.out.print("Введите координаты для перемещения в формате 'ряд столбец' : ");
             row = in.nextInt();
             column = in.nextInt();
             System.out.println();
         }
+        Display.makeGap();
         return true;
     }
 
@@ -216,11 +275,17 @@ public class User implements Player, Serializable {
             attackingUnit.attack(enemyTeam.get(enemyUnitSymbol));
             System.out.printf("Ваш %s <%s> наносит воину <%s> %d урона%n", attackingUnit.getName(), attackingUnit.getSymbol(), enemyUnitSymbol, attackingUnit.getDamage());
             if(enemyTeam.get(enemyUnitSymbol).isDead()){
+                Display.makeGap();
                 enemyTeam.get(enemyUnitSymbol).death(enemyTeam, field);
-                System.out.printf("%nЮнит <%s> был убит.", enemyUnitSymbol);
+                System.out.printf("%nЮнит <%s> был убит. ", enemyUnitSymbol);
+                earnMoney(5);
+                earnResources(8,8);
+                System.out.println("Вы получили \u001B[33m5\u001B[0m монет, \u001B[35m8\u001B[0m дерева и \u001B[35m8\u001B[0m камня");
+
             }
             System.out.println();
             aimSymbols.clear();
+            Display.makeGap();
             return true;
         }
         System.out.println("Поблизости нет вражеских юнитов. Атаковать не удастся. Попробуйте походить");

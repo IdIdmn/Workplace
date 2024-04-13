@@ -55,7 +55,7 @@ public class Cell implements Serializable {
         return ((int)calculateDistanceToOtherCell(attackingUnitPosition) <= attackingUnitAttackRange);
     }
 
-    public boolean isAvailableToMove(Unit unit, Battlefield field){
+    public boolean isAvailableToMove(Unit unit, Battlefield field, double fineDecrease){
         int moveRow = position[0], moveColumn = position[1];
         if(isEmpty()) {
             int unitRow = field.getUnitPosition(unit.getSymbol())[0], unitColumn = field.getUnitPosition(unit.getSymbol())[1];
@@ -68,7 +68,7 @@ public class Cell implements Serializable {
                             return false;
                         }
                         curCell = new Cell(field.getCell(new int[] {unitRow, curColumn}));
-                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
+                        distance += (curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())) - fineDecrease);
                     }
                 }
                 else {
@@ -77,7 +77,7 @@ public class Cell implements Serializable {
                             return false;
                         }
                         curCell = new Cell(field.getCell(new int[] {unitRow, curColumn}));
-                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
+                        distance += (curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()))  - fineDecrease);
                     }
                 }
                 return (distance <= (double) unit.getMoveRange());
@@ -89,7 +89,7 @@ public class Cell implements Serializable {
                             return false;
                         }
                         curCell = new Cell(field.getCell(new int[] {curRow, unitColumn}));
-                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
+                        distance += (curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())) - fineDecrease);
                     }
                 }
                 else {
@@ -98,7 +98,7 @@ public class Cell implements Serializable {
                             return false;
                         }
                         curCell = new Cell(field.getCell(new int[] {curRow, unitColumn}));
-                        distance += (curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol()));
+                        distance += (curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())) - fineDecrease);
                     }
                 }
                 return (distance <= (double) unit.getMoveRange());
@@ -111,7 +111,7 @@ public class Cell implements Serializable {
                                 return false;
                             }
                             curCell = new Cell(field.getCell(new int[] {unitRow - cellNum, unitColumn + cellNum}));
-                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())) - fineDecrease));
                         }
                         return (distance <= (double) unit.getMoveRange());
                     }
@@ -121,7 +121,7 @@ public class Cell implements Serializable {
                                 return false;
                             }
                             curCell = new Cell(field.getCell(new int[] {unitRow - cellNum, unitColumn - cellNum}));
-                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())) - fineDecrease));
                         }
                     }
                 }
@@ -132,7 +132,7 @@ public class Cell implements Serializable {
                                 return false;
                             }
                             curCell = new Cell(field.getCell(new int[] {unitRow + cellNum, unitColumn + cellNum}));
-                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())) - fineDecrease));
                         }
                     }
                     else{
@@ -141,7 +141,7 @@ public class Cell implements Serializable {
                                 return false;
                             }
                             curCell = new Cell(field.getCell(new int[] {unitRow + cellNum, unitColumn - cellNum}));
-                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())));
+                            distance += (2 - cellNum % 2) * ((curCell.isEmpty()) ? 1.0 : (curCell.getMultiplier(unit, field.getObstacles().get(curCell.getSymbol())) - fineDecrease));
                         }
                     }
                 }

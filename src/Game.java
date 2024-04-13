@@ -11,9 +11,9 @@ import java.util.Scanner;
 public class Game implements Serializable {
 
     private Battlefield field;
-    private User player = new User();
+    private int amountOfMoney = 30;
+    private User player = new User(amountOfMoney);
     private Bot enemyPlayer = new Bot();
-    private int amountOfMoney = 23;
     private int currentRound;
     private String name = "Game";
     private Weather gameWeather = new Weather();
@@ -27,8 +27,12 @@ public class Game implements Serializable {
     }
 
     public void turnOnCheats(){
-        for (Character symbol : player.getTeam().keySet()){
-            player.getTeam().get(symbol).buff(1000, 1000, 1000);
+        Scanner in = new Scanner(System.in);
+        System.out.print("\nВключить читы? (+/-): ");
+        if(in.next().equals("+")){
+            for (Character symbol : player.getTeam().keySet()) {
+                player.getTeam().get(symbol).buff(1000, 1000, 1000, 1000, 1000);
+            }
         }
     }
 
@@ -121,10 +125,10 @@ public class Game implements Serializable {
         deleteFile.delete();
     }
 
-    public void chooseTeam(){
+    public void makeTeam(){
         Scanner in = new Scanner(System.in);
         System.out.print("\nЖелаете зарандомить вашу команду? (+/-): ");
-        player.fillTeam(in.next().equals("+"), amountOfMoney);
+        player.fillTeam(in.next().equals("+"));
         enemyPlayer.fillTeam(amountOfMoney);
         player.putUnits(field, true);
         enemyPlayer.putUnits(field);
@@ -141,7 +145,6 @@ public class Game implements Serializable {
             while (Arrays.asList(filesDir.list()).contains(name + num + ".ser")){
                 num ++;
             }
-
         }
     }
 
@@ -154,44 +157,58 @@ public class Game implements Serializable {
         }
         catch (Exception e){System.out.print("\nА? Чё?");}
     }
-    
-    public void play() {
 
-        chooseMap();
-        chooseTeam();
-
-        Display.clear();
-
-        //turnOnCheats();
-
-        // Создаёт имя файла, в который будет сохраняться прогресс конкретно этой игры
-        makeSaveName();
-
-        gameWeather.randomWeather(this);
-        currentRound = 1;
-        System.out.println();
-        while (!player.isDefeated() && !enemyPlayer.isDefeated()) {
-            saveGame();
+    public void visitTown(){
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            System.out.printf("\nУ вас сейчас \u001B[35m%d\u001B[0m дерева и \u001B[35m%d\u001B[0m камня\n\n", player.getResourses()[0], player.getResourses()[1]);
+            System.out.println("\nВыберите действие, которое хотите совершить\n1 - Построить новое здание | 2 - Улучшить здание | 3 - Зайти на рынок | 4 - Посетить академию | 5 - Покинуть город");
+            System.out.print("Введите номер соответствующего действия: ");
+            int chosenOption = in.nextInt();
+            if (chosenOption == 1) {
+                player.getTown().createBuilding(player);
+            }
+            else if(chosenOption == 2){
+                player.getTown().upgradeBuilding(player);
+            }
+            else if(chosenOption == 3){
+                player.getTown().exchange(player);
+            }
+            else if (chosenOption == 4){
+                player.getTown().startDevelopment(player);
+            }
+            else{
+                break;
+            }
             Display.makeGap();
-            System.out.println("Раунд " + currentRound + "\n");
-            gameWeather.checkWeather();
-            player.printTeamState();
-            enemyPlayer.printTeamState();
-            Display.displayField(field);
-            System.out.println();
-            player.playRound(field, enemyPlayer.getTeam());
-            enemyPlayer.playRound(field, player.getTeam());
-            currentRound++;
-            gameWeather.decreaseRemain();
-            gameWeather.randomWeather(this);
         }
-        System.out.println((enemyPlayer.isDefeated()) ? "Вы выиграли" : "Вы проиграли");
-        System.out.println();
     }
 
-    public void continueToPlay(){
+    public void play(boolean newGame) {
+        Scanner in = new Scanner(System.in);
+        if(newGame) {
+            chooseMap();
+            makeTeam();
+            turnOnCheats();
+
+            System.out.print("\nЖелаете заглянуть в ваш город? (+/-): ");
+            if (in.next().equals("+")) {
+                visitTown();
+            }
+
+            Display.clear();
+
+            // Создаёт имя файла, в который будет сохраняться прогресс конкретно этой игры
+            if (name.equals("Game")) {
+                makeSaveName();
+            }
+
+            gameWeather.randomWeather(this);
+            currentRound = 1;
+        }
         System.out.println();
         while (!player.isDefeated() && !enemyPlayer.isDefeated()) {
+            saveGame();
             Display.makeGap();
             System.out.println("Раунд " + currentRound + "\n");
             gameWeather.checkWeather();
@@ -204,10 +221,28 @@ public class Game implements Serializable {
             currentRound++;
             gameWeather.decreaseRemain();
             gameWeather.randomWeather(this);
-            saveGame();
+            ((Market)player.getTown().getBuilding(5)).randomRates();
+            player.getTown().getIncome(player);
         }
-        System.out.println((enemyPlayer.isDefeated()) ? "Вы выиграли" : "Вы проиграли");
+        if (enemyPlayer.isDefeated()){
+            System.out.println("Вы выиграли.");
+            player.earnMoney(10);
+            player.earnResources(30,30);
+            System.out.println("Вы получили \u001B[33m10\u001B[0m монет, \u001B[35m30\u001B[0m дерева и \u001B[35m30\u001B[0m камня");
+        }
+        else{
+            System.out.println("Вы проиграли.");
+        }
         System.out.println();
+
+        System.out.print("\nЖелаете отправиться в очередное сражение? (+/-): ");
+        if (in.next().equals("+")){
+            play(true);
+        }
+        else{
+            System.out.print("\nИнтересное выдалось приключение. Удачи тебе герой!");
+        }
+
     }
 
 }

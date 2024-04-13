@@ -37,7 +37,7 @@ public class Main {
                     ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                     BaumansGate = (Game) objectInputStream.readObject();
                     objectInputStream.close();
-                    BaumansGate.continueToPlay();
+                    BaumansGate.play(false);
                 }
                 catch (IOException e) {
                     System.out.print("\nТы втираешь мне какую-то дичь.");
@@ -49,7 +49,7 @@ public class Main {
 
     static public void startNewGame(){
         BaumansGate = new Game();
-        BaumansGate.play();
+        BaumansGate.play(true);
     }
 
     static public void chooseGame(){

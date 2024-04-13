@@ -53,9 +53,11 @@ public class Unit implements Serializable {
         }
     }
 
-    public void buff(int damageBuff, int attackRangeBuff, int moveRangeBuff){
+    public void buff(int healthPointsBuff,int damageBuff, int attackRangeBuff, int defenceBuff, int moveRangeBuff){
+        healthPoints += healthPointsBuff;
         damage += damageBuff;
         attackRange += attackRangeBuff;
+        defence += defenceBuff;
         moveRange += moveRangeBuff;
     }
 
@@ -75,8 +77,8 @@ public class Unit implements Serializable {
         return (Character.getNumericValue(otherUnitSymbol) < 10);
     }
 
-    public boolean move(int[] newPosition, Battlefield field){
-        if (newPosition[0] < 0 || newPosition[0] >= field.getLength() || newPosition[1] < 0 || newPosition[1] >= field.getLength() || !field.getCell(newPosition).isAvailableToMove(this, field)){
+    public boolean move(int[] newPosition, Battlefield field, double fineDecrease){
+        if (newPosition[0] < 0 || newPosition[0] >= field.getLength() || newPosition[1] < 0 || newPosition[1] >= field.getLength() || !field.getCell(newPosition).isAvailableToMove(this, field, fineDecrease)){
             return false;
         }
         field.remove(symbol);

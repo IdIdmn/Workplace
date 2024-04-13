@@ -38,7 +38,7 @@ public class Display {
         }
     }
 
-    public static void displayMoveCells(Unit unit, Battlefield field){
+    public static void displayMoveCells(Unit unit, Battlefield field, double fineDecrease){
         System.out.print("   ");
         for (int i = 0; i < field.getLength(); i++){
             System.out.printf("%3d",i);
@@ -54,7 +54,7 @@ public class Display {
             System.out.printf("%3d|", i);
             for (int j = 0; j < field.getLength(); j++) {
                 currentCell = field.getCell(new int[] {i, j});
-                if (currentCell.isAvailableToMove(unit, field)) {
+                if (currentCell.isAvailableToMove(unit, field, fineDecrease)) {
                     System.out.printf("\u001B[42m%2s \u001B[0m", currentCell.getSymbol());
                 }
                 else {
@@ -109,7 +109,7 @@ public class Display {
     }
 
     public static void clear(){
-        for(int i = 0; i < 30; i++){
+        for(int i = 0; i < 28; i++){
             System.out.println();
         }
     }

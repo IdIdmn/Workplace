@@ -66,13 +66,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanShoot){
-                player.getTeam().get(symbol).buff(0,-3,0);
+                player.getTeam().get(symbol).buff(0,0,-3,0,0);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanShoot){
-                player.getTeam().get(symbol).buff(0,-3,0);
+                player.getTeam().get(symbol).buff(0,0,-3,0,0);
             }
         }
         roundsRemain = 2;
@@ -83,13 +83,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanRide){
-                player.getTeam().get(symbol).buff(0,0,-2);
+                player.getTeam().get(symbol).buff(0,0,0,0,-2);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanRide){
-                player.getTeam().get(symbol).buff(0,0,-2);
+                player.getTeam().get(symbol).buff(0,0,0,0,-2);
             }
         }
         roundsRemain = 2;
@@ -100,13 +100,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanWalk){
-                player.getTeam().get(symbol).buff(0,0,-1);
+                player.getTeam().get(symbol).buff(0,0,0,0,-1);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanWalk){
-                player.getTeam().get(symbol).buff(0,0,-1);
+                player.getTeam().get(symbol).buff(0,0,0,0,-1);
             }
         }
         roundsRemain = 2;
@@ -117,13 +117,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanStab){
-                player.getTeam().get(symbol).buff(-2,0,0);
+                player.getTeam().get(symbol).buff(0,-2,0,0,0);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanStab){
-                player.getTeam().get(symbol).buff(-2,0,0);
+                player.getTeam().get(symbol).buff(0,-2,0,0,0);
             }
         }
         roundsRemain = 2;
@@ -134,13 +134,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanShoot){
-                player.getTeam().get(symbol).buff(0,3,0);
+                player.getTeam().get(symbol).buff(0,0,3,0,0);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanShoot){
-                player.getTeam().get(symbol).buff(0,3,0);
+                player.getTeam().get(symbol).buff(0,0,3,0,0);
             }
         }
         isRaining = false;
@@ -150,13 +150,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanRide){
-                player.getTeam().get(symbol).buff(0,0,2);
+                player.getTeam().get(symbol).buff(0,0,0,0,2);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanRide){
-                player.getTeam().get(symbol).buff(0,0,2);
+                player.getTeam().get(symbol).buff(0,0,0,0,2);
             }
         }
         isSnowing = false;
@@ -166,13 +166,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanWalk){
-                player.getTeam().get(symbol).buff(0,0,1);
+                player.getTeam().get(symbol).buff(0,0,0,0,1);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanShoot){
-                player.getTeam().get(symbol).buff(0,0,1);
+                player.getTeam().get(symbol).buff(0,0,0,0,1);
             }
         }
         isDrought = false;
@@ -182,13 +182,13 @@ public class Weather implements Serializable {
         Player player = game.getPlayer();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanStab){
-                player.getTeam().get(symbol).buff(2,0,0);
+                player.getTeam().get(symbol).buff(0,2,0,0,0);
             }
         }
         player = game.getBot();
         for (Character symbol : player.getTeam().keySet()){
             if(player.getTeam().get(symbol) instanceof CanStab){
-                player.getTeam().get(symbol).buff(2,0,0);
+                player.getTeam().get(symbol).buff(0,2,0,0,0);
             }
         }
         isFoggy = false;

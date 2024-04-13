@@ -6,6 +6,7 @@ public class Bot implements Player, Serializable {
 
     private LinkedList<Character> aimSymbols = new LinkedList<>();
     private HashMap<Character, Unit> team = new HashMap<>();
+    private double fineDecrease = 0;
 
     public void printTeamState(){
         System.out.println();
@@ -14,6 +15,11 @@ public class Bot implements Player, Serializable {
             System.out.println(team.get(symbol).toString());
         }
         System.out.println();
+    }
+
+    @Override
+    public double getFineDecrease() {
+        return fineDecrease;
     }
 
     public HashMap<Character, Unit> getTeam(){
@@ -95,7 +101,7 @@ public class Bot implements Player, Serializable {
         double row = field.getUnitPosition(unit.getSymbol())[0] + 1 + (unit.getMoveRange() - 1) * Math.random();
         int column = field.getUnitPosition(unit.getSymbol())[1];
         if (row < field.getLength()){
-            unit.move(new int[]{(int)row, column},field);
+            unit.move(new int[]{(int)row, column},field, fineDecrease);
         }
     }
 

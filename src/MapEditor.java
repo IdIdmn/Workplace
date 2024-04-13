@@ -34,7 +34,7 @@ public class MapEditor {
                 }
                 System.out.print("Введите позицию: ");
                 int row = in.nextInt(), column = in.nextInt();
-                while(row >= field.getLength() - 1 || row <= 0 || column >= field.getLength() - 1 || column <= 0){
+                while(row >= field.getLength() - 1 || row <= 0 || column >= field.getLength() || column < 0){
                     System.out.print("\nНовое препятсвие должно лежать в пределах поля, а также располагаться не на самой верхней или нижней строке. Введите заново: ");
                     row = in.nextInt();
                     column = in.nextInt();
