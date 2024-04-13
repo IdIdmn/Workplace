@@ -1,3 +1,3 @@
-public interface CanRide{
+public interface CanRide {
 
 }

@@ -1,7 +1,9 @@
-public class Weather {
+import java.io.Serializable;
 
-    private static boolean isRaining, isSnowing, isDrought, isFoggy;
-    private static int roundsRemain;
+public class Weather implements Serializable {
+
+    private boolean isRaining, isSnowing, isDrought, isFoggy;
+    private int roundsRemain;
 
     Weather(){
         isRaining = false;
@@ -11,36 +13,42 @@ public class Weather {
         roundsRemain = 0;
     }
 
-    public void randomWeather(Game game) {
+    public void checkWeather(){
         System.out.print("\u001B[34m");
+        if (isRaining) {
+            System.out.print("Небеса разверзлись, обрушив на головы путников настоящий водопад. Стрелки оказались беспомощны перед беснующейся природой.");
+        } else if (isSnowing) {
+            System.out.print("Леденящий ветер без конца усиливает свой натиск, заметая снегом все тропинки. Лошади начинают вязнуть в растущих на глазах сугробах.");
+        } else if (isDrought) {
+            System.out.print("Последние капли влаги были беспощадно высушены палящим солнцем. Утомлённые путники с трудом продожают передвигать ногами по раскалённой почве.");
+        } else if (isFoggy) {
+            System.out.print("Беспроглядная белая мгла опустилась на поле боя. Каждый взмах меча даётся воинам с огромным трудом, будто само пространство вокрут противится движению лезвия.");
+        } else {
+            System.out.print("Боги смилостивились над вами, разогнав непогоду.");
+        }
+        System.out.print("\u001B[0m\n");
+    }
+
+    public void randomWeather(Game game) {
         double weatherNum = 5 * Math.random();
         if (roundsRemain <= 0) {
             startClearWeather(game);
             if ((int) weatherNum == 0) {
                 startRain(game);
-                System.out.print("Небеса разверзлись, обрушив на головы путников настоящий водопад. Стрелки оказались беспомощны перед беснующейся природой.");
             }
             else if ((int) weatherNum == 1) {
                 startSnowing(game);
-                System.out.print("Леденящий ветер без конца усиливает свой натиск, заметая снегом все тропинки. Лошади начинают вязнуть в растущих на глазах сугробах.");
             }
             else if ((int) weatherNum == 2) {
                 startDrought(game);
-                System.out.print("Последние капли влаги были беспощадно высушены палящим солнцем. Утомлённые путники с трудом продожают передвигать ногами по раскалённой почве.");
             }
             else if((int)weatherNum == 3){
                 startFog(game);
-                System.out.print("Беспроглядная белая мгла опустилась на поле боя. Каждый взмах меча даётся воинам с огромным трудом, будто само пространство вокрут противится движению лезвия.");
-            }
-            else {
-                if(roundsRemain == 0) System.out.print("Боги смилостивились над вами, разогнав непогоду.");
             }
         }
         else if ((int) weatherNum == 4) {
             startClearWeather(game);
-            System.out.print("Боги смилостивились над вами, разогнав непогоду.");
         }
-        System.out.print("\u001B[0m\n");
     }
 
     public void decreaseRemain(){
@@ -185,5 +193,4 @@ public class Weather {
         }
         isFoggy = false;
     }
-
 }

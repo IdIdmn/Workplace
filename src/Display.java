@@ -9,7 +9,7 @@ public class Display {
     }
 
     public static void displayField(Battlefield field){
-        System.out.print("   ");
+        System.out.print("\n   ");
         for (int i = 0; i < field.getLength(); i++){
             System.out.printf("%3d",i);
         }

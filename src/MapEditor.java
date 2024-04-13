@@ -43,6 +43,8 @@ public class MapEditor {
             }
             else if (chosenOption == 3) {
                 field.putRandomObstacles();
+                System.out.println("\nИтоговый вариант карты:");
+                Display.displayField(field);
                 break;
             }
             else{
@@ -51,4 +53,5 @@ public class MapEditor {
             System.out.println("\n\n");
         }
     }
+
 }

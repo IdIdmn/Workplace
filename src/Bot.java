@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Bot implements Player{
+public class Bot implements Player, Serializable {
 
     private LinkedList<Character> aimSymbols = new LinkedList<>();
     private HashMap<Character, Unit> team = new HashMap<>();

@@ -1,4 +1,6 @@
-public class Obstacle {
+import java.io.Serializable;
+
+public class Obstacle implements Serializable {
 
     private String name;
     private double walkerFine;

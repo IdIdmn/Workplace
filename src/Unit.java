@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Unit{
+public class Unit implements Serializable {
 
     protected int healthPoints;
     protected int damage;

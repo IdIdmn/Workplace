@@ -1,4 +1,6 @@
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
 
     private char symbol;
     private int[] position;

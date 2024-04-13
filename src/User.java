@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Scanner;
 
-public class User implements Player{
+public class User implements Player, Serializable {
 
     private LinkedList<Character> AimSymbols = new LinkedList<>();
     private HashMap<Character, Unit> Team = new HashMap<>();
