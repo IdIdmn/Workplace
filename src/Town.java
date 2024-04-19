@@ -46,16 +46,29 @@ public class Town implements Serializable {
                 System.out.println("\nВведите номер соответствующей позиции: ");
                 int chosenOption = in.nextInt();
                 if (chosenOption == 1) {
-                    player.earnResources(-((Market) buildings[5]).getWoodRockRate()[0], ((Market) buildings[5]).getWoodRockRate()[1]);
+                    if(player.getResourses()[0] >= ((Market) buildings[5]).getWoodRockRate()[0]) {
+                        player.earnResources(-((Market) buildings[5]).getWoodRockRate()[0], ((Market) buildings[5]).getWoodRockRate()[1]);
+                        return;
+                    }
                 } else if (chosenOption == 2) {
-                    player.earnResources(((Market) buildings[5]).getRockWoodRate()[0], -((Market) buildings[5]).getRockWoodRate()[1]);
+                    if(player.getResourses()[1] >= ((Market) buildings[5]).getRockWoodRate()[1]) {
+                        player.earnResources(((Market) buildings[5]).getRockWoodRate()[1], -((Market) buildings[5]).getRockWoodRate()[0]);
+                        return;
+                    }
                 } else if (chosenOption == 3) {
-                    player.earnResources(-((Market) buildings[5]).getWoodMoneyRate()[0], 0);
-                    player.earnMoney(((Market) buildings[5]).getWoodMoneyRate()[1]);
+                    if(player.getResourses()[0] >= ((Market) buildings[5]).getWoodMoneyRate()[0]){
+                        player.earnResources(-((Market) buildings[5]).getWoodMoneyRate()[0], 0);
+                        player.earnMoney(((Market) buildings[5]).getWoodMoneyRate()[1]);
+                        return;
+                    }
                 } else {
-                    player.earnResources(0, -((Market) buildings[5]).getRockMoneyRate()[0]);
-                    player.earnMoney(((Market) buildings[5]).getRockMoneyRate()[1]);
+                    if(player.getResourses()[1] >= ((Market) buildings[5]).getRockMoneyRate()[0]) {
+                        player.earnResources(0, -((Market) buildings[5]).getRockMoneyRate()[0]);
+                        player.earnMoney(((Market) buildings[5]).getRockMoneyRate()[1]);
+                        return;
+                    }
                 }
+                System.out.println("\nДля этой сделки у вас недостаточно ресурсов.");
             }
         }
         else{
@@ -64,9 +77,11 @@ public class Town implements Serializable {
     }
 
     public void getIncome(User player){
-        int earnedMoney = ((Workshop)buildings[4]).makeProfit();
-        player.earnMoney(earnedMoney);
-        System.out.println("За этот раунд мастерские выплатили \u001B[33m" + earnedMoney + "\u001B[0m золотых монет.");
+        if (buildings[4].getAmount() > 0) {
+            int earnedMoney = ((Workshop) buildings[4]).makeProfit();
+            player.earnMoney(earnedMoney);
+            System.out.println("За этот раунд мастерские выплатили \u001B[33m" + earnedMoney + "\u001B[0m золотых монет.");
+        }
     }
 
     public void createBuilding(User player){
@@ -83,7 +98,7 @@ public class Town implements Serializable {
             return;
         }
         Scanner in = new Scanner(System.in);
-        System.out.print("Введите номер здания которое вы хотите приобрести: ");
+        System.out.print("\nВведите номер здания которое вы хотите приобрести: ");
         int chosenBuilding = in.nextInt();
         buildings[chosenBuilding].create(player);
         player.getResourses()[0] -= buildings[chosenBuilding].getCost()[0];
@@ -104,7 +119,7 @@ public class Town implements Serializable {
             return;
         }
         Scanner in = new Scanner(System.in);
-        System.out.print("Введите номер здания которое вы хотите улучшить: ");
+        System.out.print("\nВведите номер здания которое вы хотите улучшить: ");
         int chosenBuilding = in.nextInt();
         ((EnhancementBuilding)buildings[chosenBuilding]).levelUp(player);
         player.getResourses()[0] -= buildings[chosenBuilding].getCost()[0];

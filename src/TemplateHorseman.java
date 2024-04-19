@@ -1,4 +1,4 @@
-public class TemplateHorseman extends Horseman implements CanRide{
+public class TemplateHorseman extends Horseman implements CanRide, CanStab{
 
     TemplateHorseman(String name, int healthPoints, int damage, int attackRange, int defence, int moveRange){
         this.healthPoints = healthPoints;

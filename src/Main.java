@@ -9,7 +9,7 @@ public class Main {
 
     static public Game BaumansGate;
 
-    static public void loadGame() {
+    static public void loadGame(){
         Scanner in = new Scanner(System.in);
         File filesDir = new File("Saves\\GameSaves");
         if (filesDir.list() == null || filesDir.list().length == 0) {

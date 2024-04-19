@@ -1,4 +1,4 @@
-public class TemplateWalker extends Walker implements CanWalk{
+public class TemplateWalker extends Walker implements CanWalk, CanStab{
 
     TemplateWalker(String name, int healthPoints, int damage, int attackRange, int defence, int moveRange){
         this.healthPoints = healthPoints;

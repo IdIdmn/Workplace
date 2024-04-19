@@ -1,4 +1,4 @@
-public class TemplateArcher extends Archer implements CanShoot{
+public class TemplateArcher extends Archer implements CanShoot, CanWalk{
 
     TemplateArcher(String name, int healthPoints, int damage, int attackRange, int defence, int moveRange){
         this.healthPoints = healthPoints;

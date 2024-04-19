@@ -7,7 +7,7 @@ public class MapEditor {
         int chosenOption;
         while(true) {
             Display.displayField(field);
-            System.out.println("\n\nЧто вы желаете сделать?\n1 - Создать новое препятсвие | 2 - Добавить препятствие на поле | 3 - Не мучиться и всё таки зарандомить | 4 - Выйти из редактора");
+            System.out.println("\n\nЧто вы желаете сделать?\n1 - Создать новое препятсвие | 2 - Добавить препятствие на поле | 3 - Не мучиться и всё-таки зарандомить | 4 - Выйти из редактора");
             System.out.print("Введите номер соответствующего действия: ");
             chosenOption = in.nextInt();
             if (chosenOption == 1) {

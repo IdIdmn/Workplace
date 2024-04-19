@@ -14,7 +14,7 @@ public class Game implements Serializable {
     private int amountOfMoney = 30;
     private User player = new User(amountOfMoney);
     private Bot enemyPlayer = new Bot();
-    private int currentRound;
+    private int currentRound, currentGame = 0;
     private String name = "Game";
     private Weather gameWeather = new Weather();
 
@@ -62,6 +62,7 @@ public class Game implements Serializable {
         }
         catch (IOException e){System.out.print("\nА? Чё?"); return false;}
         catch (ClassNotFoundException e) {return false;}
+
     }
 
     public void createMap(){
@@ -101,6 +102,14 @@ public class Game implements Serializable {
                 if(!loadMap()){
                     chooseMap();
                     return;
+                }
+                System.out.print("\nЖелаете изменить загруженную карту? (+/-): ");
+                if(in.next().equals("+")){
+                    MapEditor.edit(field);
+                    System.out.print("\nЖелаете сохранить карту для будущих приключений? (+/-): ");
+                    if (in.next().equals("+")) {
+                        saveMap();
+                    }
                 }
             }
             else{
@@ -161,9 +170,9 @@ public class Game implements Serializable {
     public void visitTown(){
         Scanner in = new Scanner(System.in);
         while (true) {
-            System.out.printf("\nУ вас сейчас \u001B[35m%d\u001B[0m дерева и \u001B[35m%d\u001B[0m камня\n\n", player.getResourses()[0], player.getResourses()[1]);
+            System.out.printf("\nУ вас сейчас \u001B[33m%d\u001B[0m монет, \u001B[35m%d\u001B[0m дерева и \u001B[35m%d\u001B[0m камня\n\n", player.getMoney(), player.getResourses()[0], player.getResourses()[1]);
             System.out.println("\nВыберите действие, которое хотите совершить\n1 - Построить новое здание | 2 - Улучшить здание | 3 - Зайти на рынок | 4 - Посетить академию | 5 - Покинуть город");
-            System.out.print("Введите номер соответствующего действия: ");
+            System.out.print("\nВведите номер соответствующего действия: ");
             int chosenOption = in.nextInt();
             if (chosenOption == 1) {
                 player.getTown().createBuilding(player);
@@ -206,7 +215,8 @@ public class Game implements Serializable {
             gameWeather.randomWeather(this);
             currentRound = 1;
         }
-        System.out.println();
+
+        System.out.println("Игра №" + currentGame + "\n");
         while (!player.isDefeated() && !enemyPlayer.isDefeated()) {
             saveGame();
             Display.makeGap();
@@ -225,7 +235,7 @@ public class Game implements Serializable {
             player.getTown().getIncome(player);
         }
         if (enemyPlayer.isDefeated()){
-            System.out.println("Вы выиграли.");
+            System.out.println("\n\nВы выиграли.");
             player.earnMoney(10);
             player.earnResources(30,30);
             System.out.println("Вы получили \u001B[33m10\u001B[0m монет, \u001B[35m30\u001B[0m дерева и \u001B[35m30\u001B[0m камня");

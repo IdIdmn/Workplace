@@ -98,10 +98,10 @@ public class User implements Player, Serializable {
         if (randomBuy){
             double unitIndex;
             while (money >= 10 && Team.size() <= 10){
-                unitIndex = 0 + Math.random() * (9 + addedUnits.size());
+                unitIndex = 1 + Math.random() * (9 + addedUnits.size());
                 chosenUnit = createUnit((int)unitIndex,Character.toChars(name + 48)[0]);
                 while(money < chosenUnit.getCost()){
-                    unitIndex = 0 + Math.random() * (9 + addedUnits.size());
+                    unitIndex = 1 + Math.random() * (9 + addedUnits.size());
                     chosenUnit = createUnit((int)unitIndex, Character.toChars(name + 48)[0]);
                 }
                 Team.put(chosenUnit.getSymbol(), chosenUnit);
@@ -281,7 +281,6 @@ public class User implements Player, Serializable {
                 earnMoney(5);
                 earnResources(8,8);
                 System.out.println("Вы получили \u001B[33m5\u001B[0m монет, \u001B[35m8\u001B[0m дерева и \u001B[35m8\u001B[0m камня");
-
             }
             System.out.println();
             aimSymbols.clear();
