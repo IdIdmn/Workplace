@@ -1,6 +1,6 @@
 
-import Game.Game;
-import Game.GameMenu;
+import BaumansGate.Game.Game;
+import BaumansGate.Game.GameMenu;
 
 public class Main {
 
