@@ -12,6 +12,15 @@ public class Bot implements Player, Serializable {
     private LinkedList<Character> aimSymbols = new LinkedList<>();
     private HashMap<Character, Unit> team = new HashMap<>();
     private double fineDecrease = 0;
+    private int money;
+
+    public Bot(int money){
+        this.money = money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
 
     public void printTeamState(){
         System.out.println();
@@ -31,7 +40,7 @@ public class Bot implements Player, Serializable {
         return team;
     }
 
-    public void fillTeam(int money){
+    public void randomTeam(){
         int name = 0;
         Unit chosenUnit;
         double unitIndex;
@@ -99,11 +108,12 @@ public class Bot implements Player, Serializable {
             else{
                 unitMove(field, team.get(symbol));
             }
+            aimSymbols.clear();
         }
     }
 
     public void unitMove(Battlefield field, Unit unit){
-        double row = field.getUnitPosition(unit.getSymbol())[0] + 1 + (unit.getMoveRange() - 1) * Math.random();
+        double row = field.getUnitPosition(unit.getSymbol())[0] + 1 + unit.getMoveRange() * Math.random();
         int column = field.getUnitPosition(unit.getSymbol())[1];
         if (row < field.getLength()){
             unit.move(new int[]{(int)row, column},field, fineDecrease);

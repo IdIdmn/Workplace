@@ -6,7 +6,7 @@ public class Forge extends EnhancementBuilding {
 
     private String name = "Кузня";
     private int level;
-    static private int amount = 0;
+    private int amount = 0;
     private int[] cost = {4, 7};
 
     @Override

@@ -13,12 +13,23 @@ import java.util.Scanner;
 public class Game implements Serializable {
 
     private Battlefield field;
-    private int amountOfMoney = 30;
-    private User player = new User(amountOfMoney);
-    private Bot enemyPlayer = new Bot();
+    private int amountOfMoney;
+    private User player;
+    private Bot enemyPlayer;
     private int currentRound, currentGame;
     private String name = "Game";
     private Weather gameWeather = new Weather();
+
+    public Game(int money){
+        amountOfMoney = money;
+        player = new User(amountOfMoney);
+        enemyPlayer = new Bot(amountOfMoney);
+        currentGame = 1;
+    }
+
+    public Battlefield getField() {
+        return field;
+    }
 
     public User getPlayer(){
         return player;
@@ -28,8 +39,7 @@ public class Game implements Serializable {
         return enemyPlayer;
     }
 
-    public void turnOnCheats(){
-        Scanner in = new Scanner(System.in);
+    public void turnOnCheats(Scanner in){
         System.out.print("\nВключить читы? (+/-): ");
         if(in.next().equals("+")){
             for (Character symbol : player.getTeam().keySet()) {
@@ -38,8 +48,7 @@ public class Game implements Serializable {
         }
     }
 
-    public boolean loadMap(){
-        Scanner in = new Scanner(System.in);
+    public boolean loadMap(Scanner in){
         try {
             File filesDir = new File("Saves\\SavedMaps");
             if (filesDir.list() == null || filesDir.list().length == 0){
@@ -52,8 +61,8 @@ public class Game implements Serializable {
             }
             System.out.print("\nЖелаете удалить сохранённую карту? (+/-): ");
             if(in.next().equals("+")){
-                deleteMap(filesDir);
-                return loadMap();
+                deleteMap(filesDir, in);
+                return loadMap(in);
             }
             System.out.print("\nВведите имя файла для загрузки из списка выше: ");
             String filename = in.next();
@@ -68,11 +77,10 @@ public class Game implements Serializable {
 
     }
 
-    public void createMap(){
-        Scanner in = new Scanner(System.in);
+    public void createMap(Scanner in){
         System.out.print("\nВведите размер карты: ");
         field = new Battlefield(in.nextInt());
-        MapEditor.edit(field);
+        MapEditor.edit(field, in);
     }
 
     public void randomMap(){
@@ -80,8 +88,7 @@ public class Game implements Serializable {
         field.putRandomObstacles();
     }
 
-    public void saveMap(){
-        Scanner in = new Scanner(System.in);
+    public void saveMap(Scanner in){
         try {
             System.out.print("\nВведи имя файла для сохранения: ");
             FileOutputStream outputStream = new FileOutputStream("Saves\\SavedMaps\\" + in.next() + ".ser");
@@ -92,8 +99,7 @@ public class Game implements Serializable {
         catch (Exception e){System.out.print("\nА? Чё?");}
     }
 
-    public void chooseMap(){
-        Scanner in = new Scanner(System.in);
+    public void chooseMap(Scanner in){
         System.out.print("\nЖелаете ли вы зарандомить карту? (+/-): ");
         if (in.next().equals("+")) {
             randomMap();
@@ -102,31 +108,30 @@ public class Game implements Serializable {
             System.out.println("\nВыберите действие, которое хотите совершить\n1 - Загрузить карту | 2 - Создать новую");
             System.out.print("Введите номер соответствующего действия: ");
             if (in.nextInt() == 1){
-                if(!loadMap()){
-                    chooseMap();
+                if(!loadMap(in)){
+                    chooseMap(in);
                     return;
                 }
                 System.out.print("\nЖелаете изменить загруженную карту? (+/-): ");
                 if(in.next().equals("+")){
-                    MapEditor.edit(field);
+                    MapEditor.edit(field, in);
                     System.out.print("\nЖелаете сохранить карту для будущих приключений? (+/-): ");
                     if (in.next().equals("+")) {
-                        saveMap();
+                        saveMap(in);
                     }
                 }
             }
             else{
-                createMap();
+                createMap(in);
                 System.out.print("\nЖелаете сохранить карту для будущих приключений? (+/-): ");
                 if (in.next().equals("+")) {
-                    saveMap();
+                    saveMap(in);
                 }
             }
         }
     }
 
-    static public void deleteMap(File filesDir){
-        Scanner in = new Scanner(System.in);
+    public void deleteMap(File filesDir, Scanner in){
         System.out.print("\nВведите имя файла для удаления из списка выше: ");
         String filename = in.next();
         while (!Arrays.asList(filesDir.list()).contains(filename + ".ser")) {
@@ -137,12 +142,16 @@ public class Game implements Serializable {
         deleteFile.delete();
     }
 
-    public void makeTeam(){
-        Scanner in = new Scanner(System.in);
+    public void makeTeam(Scanner in){
         System.out.print("\nЖелаете зарандомить вашу команду? (+/-): ");
-        player.fillTeam(in.next().equals("+"));
-        enemyPlayer.fillTeam(amountOfMoney);
-        player.putUnits(field, true);
+        if(in.next().equals("+")){
+            player.randomTeam();
+        }
+        else{
+            player.fillTeam(in);
+        }
+        enemyPlayer.randomTeam();
+        player.putUnits(field, true, in);
         enemyPlayer.putUnits(field);
     }
 
@@ -164,11 +173,10 @@ public class Game implements Serializable {
             objectOutputStream.writeObject(this);
             objectOutputStream.close();
         }
-        catch (IOException e){System.out.print("\nА? Чё?");}
+        catch (IOException e){System.out.print("\nА? Чё?\n");}
     }
 
-    public void visitTown(){
-        Scanner in = new Scanner(System.in);
+    public void visitTown(Scanner in){
         while (true) {
             System.out.printf("\nУ вас сейчас \u001B[33m%d\u001B[0m монет, \u001B[35m%d\u001B[0m дерева и \u001B[35m%d\u001B[0m камня\n\n", player.getMoney(), player.getBuildingResources()[0], player.getBuildingResources()[1]);
             System.out.println("\nВыберите действие, которое хотите совершить\n1 - Построить новое здание | 2 - Улучшить здание | 3 - Зайти на рынок | 4 - Посетить академию | 5 - Покинуть город");
@@ -193,30 +201,30 @@ public class Game implements Serializable {
         }
     }
 
-    public void play(boolean newGame) {
-        Scanner in = new Scanner(System.in);
+    public void play(boolean newGame, Scanner in) {
         if(newGame) {
-            chooseMap();
+            chooseMap(in);
 
             System.out.print("\nЖелаете заглянуть в ваш город? (+/-): ");
             if (in.next().equals("+")) {
-                visitTown();
+                visitTown(in);
             }
 
-            makeTeam();
-            turnOnCheats();
+            makeTeam(in);
+            turnOnCheats(in);
 
             // Создаёт имя файла, в который будет сохраняться прогресс конкретно этой игры
             if (name.equals("Game")) {
                 makeSaveName();
             }
 
-            player.setGrainAmount(player.getTeam().size() * 6);
+            if(currentGame == 1) {
+                player.setGrainAmount(player.getTeam().size() * 3);
+            }
             player.getTown().getMill().setMaxAmountOfGrainPerRound(player.getTeam().size() * 4);
 
             gameWeather.randomWeather(this);
             currentRound = 1;
-            currentGame = 1;
         }
 
         Display.clear();
@@ -233,14 +241,15 @@ public class Game implements Serializable {
             enemyPlayer.printTeamState();
             Display.displayField(field);
             System.out.println();
-            player.playRound(field, enemyPlayer.getTeam());
+            player.playRound(field, enemyPlayer.getTeam(), in);
             enemyPlayer.playRound(field, player.getTeam());
             currentRound++;
             gameWeather.decreaseRemain();
             gameWeather.randomWeather(this);
             player.getTown().getMarket().randomRates();
             System.out.printf("\nВо время передышки ваши воины съели \u001B[35m%d\u001B[0m зерна\n", player.getTeam().size() * 2);
-            player.getTown().getIncome(player);
+            player.getTown().getWorkshop().getIncome(player);
+            player.getTown().getMill().payDebt(player);
             player.getTown().getMill().changeLevelOfDiscontent();
             player.getTown().getMill().checkLevelOfDiscontent();
             player.getTown().getMill().tryToRunRiot(player);
@@ -253,14 +262,23 @@ public class Game implements Serializable {
             System.out.println("Вы получили \u001B[33m10\u001B[0m монет, \u001B[35m30\u001B[0m дерева и \u001B[35m30\u001B[0m камня");
         }
         else{
-            System.out.println("Вы проиграли.");
+            if(player.getTeam().isEmpty()){
+                System.out.println("\nОтряд оказался полностью разбит.");
+            }
+            else {
+                System.out.println("\nЗапасы провизии полностью иссякли.");
+            }
+            System.out.println("\nВы проиграли.");
         }
         System.out.println();
 
         System.out.print("\nЖелаете отправиться в очередное сражение? (+/-): ");
         if (in.next().equals("+")){
             currentGame ++;
-            play(true);
+            enemyPlayer.setMoney(amountOfMoney);
+            enemyPlayer.getTeam().clear();
+            player.getTeam().clear();
+            play(true, in);
         }
         else{
             System.out.print("\nИнтересное выдалось приключение. Удачи тебе, герой!");

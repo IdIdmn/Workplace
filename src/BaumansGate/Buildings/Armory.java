@@ -6,7 +6,7 @@ public class Armory extends EnhancementBuilding {
 
     private String name = "Арсенал";
     private int level;
-    static private int amount = 0;
+    private int amount = 0;
     private int[] cost = {5, 6};
 
     @Override

@@ -8,7 +8,7 @@ public class Tavern extends EnhancementBuilding {
 
     private String name = "Таверна";
     private int level;
-    static private int amount = 0;
+    private int amount = 0;
     private int[] cost = {8, 5};
 
     @Override
@@ -57,11 +57,16 @@ public class Tavern extends EnhancementBuilding {
 
     @Override
     public boolean levelUp(User player) {
-        upgradeParam(player);
-        level ++;
-        cost[0] += 2;
-        cost[1] += 2;
-        return true;
+        if (level == 3) {
+            System.out.println("Максимальный уровень уже достигнут.");
+            return false;
+        } else {
+            upgradeParam(player);
+            level++;
+            cost[0] += 2;
+            cost[1] += 2;
+            return true;
+        }
     }
 
 }

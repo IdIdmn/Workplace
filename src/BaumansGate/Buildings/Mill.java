@@ -33,8 +33,11 @@ public class Mill implements Serializable {
         else if (taxes <= 50) {
             levelOfDiscontent += 10;
         }
-        else if (taxes <= 75) {
-            levelOfDiscontent += 25;
+        else if (taxes <= 70) {
+            levelOfDiscontent += 15;
+        }
+        else if (taxes <= 90) {
+            levelOfDiscontent += 20;
         }
         else {
             levelOfDiscontent += 35;
@@ -67,7 +70,7 @@ public class Mill implements Serializable {
     }
 
     public void payDebt(User user){
-        int earnedMoney = (int)Math.log(maxAmountOfGrainPerRound * taxes) * 2;
+        int earnedMoney = (int)Math.log(maxAmountOfGrainPerRound * taxes) * 2 + (int)maxAmountOfGrainPerRound * taxes * 4 / 100 ;
         double earnedGrain = maxAmountOfGrainPerRound * (100 - taxes) / 100;
         user.setGrainAmount(user.getGrainAmount() + earnedGrain);
         user.earnMoney(earnedMoney);

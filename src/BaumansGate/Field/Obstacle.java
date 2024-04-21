@@ -16,6 +16,13 @@ public class Obstacle implements Serializable {
         this.horsemanFine = horsemanFine;
     }
 
+    public Obstacle(Obstacle newObstacle){
+        name = newObstacle.getName();
+        walkerFine = newObstacle.getWalkerFine();
+        archerFine = newObstacle.getArcherFine();
+        horsemanFine = newObstacle.getHorsemanFine();
+    }
+
     public String getName() {
         return name;
     }

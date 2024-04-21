@@ -8,8 +8,7 @@ import java.util.Scanner;
 
 public class MapEditor {
 
-    static public void edit(Battlefield field){
-        Scanner in = new Scanner(System.in);
+    static public void edit(Battlefield field, Scanner in){
         int chosenOption;
         while(true) {
             Display.displayField(field);

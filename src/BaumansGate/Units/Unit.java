@@ -17,7 +17,26 @@ public class Unit implements Serializable {
     protected char symbol;
     protected String name;
 
-    Unit(){};
+    public Unit(){};
+
+    public Unit(Unit newUnit){
+        healthPoints = newUnit.getHealthPoints();
+        damage = newUnit.getDamage();
+        attackRange = newUnit.getAttackRange();
+        defence = newUnit.getDefence();
+        moveRange = newUnit.getMoveRange();
+        cost = newUnit.getCost();
+        symbol = newUnit.getSymbol();
+        name = newUnit.getName();
+    }
+
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
 
     public char getSymbol(){
         return symbol;

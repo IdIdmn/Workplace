@@ -52,7 +52,7 @@ public class Battlefield implements Serializable {
     public void putRandomObstacles(){
         double row, column, obstacleIndex;
         Character[] obstacleSymbols = obstacles.keySet().toArray(new Character[obstacles.size()]);
-        for (int i = 0; i < length; i++){
+        for (int i = 0; i < length * 3 / 2; i++){
             row = 1 + Math.random() * (length - 3); column = 0 + Math.random() * (length - 1);
             while (!field[(int)row][(int)column].isEmpty()){
                 row = 1 + Math.random() * (length - 3); column = 0 + Math.random() * (length - 1);

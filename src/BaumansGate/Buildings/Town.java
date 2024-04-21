@@ -88,55 +88,12 @@ public class Town implements Serializable {
     }
 
     public void exchange(User player){
-        if (buildings[5].getAmount() > 0) {
-            Scanner in = new Scanner(System.in);
-            System.out.println("На рынке сейчас следующие курсы валют: ");
-            System.out.printf("1) Дерево -> Камни : %d -> %d\n", getMarket().getWoodRockRate()[0], getMarket().getWoodRockRate()[1]);
-            System.out.printf("2) Камни -> Дерево : %d -> %d\n", getMarket().getRockWoodRate()[0], getMarket().getRockWoodRate()[1]);
-            System.out.printf("3) Дерево -> Монеты : %d -> %d\n", getMarket().getWoodMoneyRate()[0], getMarket().getWoodMoneyRate()[1]);
-            System.out.printf("4) Камни -> Монеты : %d -> %d\n", getMarket().getRockMoneyRate()[0], getMarket().getRockMoneyRate()[1]);
-            System.out.print("\nЖелаете совершить обмен? (+/-): ");
-            if (in.next().equals("+")) {
-                System.out.println("\nВведите номер соответствующей позиции: ");
-                int chosenOption = in.nextInt();
-                if (chosenOption == 1) {
-                    if(player.getBuildingResources()[0] >= getMarket().getWoodRockRate()[0]) {
-                        player.earnResources(-getMarket().getWoodRockRate()[0], getMarket().getWoodRockRate()[1]);
-                        return;
-                    }
-                } else if (chosenOption == 2) {
-                    if(player.getBuildingResources()[1] >= getMarket().getRockWoodRate()[1]) {
-                        player.earnResources(getMarket().getRockWoodRate()[1], -getMarket().getRockWoodRate()[0]);
-                        return;
-                    }
-                } else if (chosenOption == 3) {
-                    if(player.getBuildingResources()[0] >= getMarket().getWoodMoneyRate()[0]){
-                        player.earnResources(-getMarket().getWoodMoneyRate()[0], 0);
-                        player.earnMoney(getMarket().getWoodMoneyRate()[1]);
-                        return;
-                    }
-                } else {
-                    if(player.getBuildingResources()[1] >= getMarket().getRockMoneyRate()[0]) {
-                        player.earnResources(0, -getMarket().getRockMoneyRate()[0]);
-                        player.earnMoney(getMarket().getRockMoneyRate()[1]);
-                        return;
-                    }
-                }
-                System.out.println("\nДля этой сделки у вас недостаточно ресурсов.");
-            }
+        if (getMarket().getAmount() > 0) {
+            getMarket().trade(player);
         }
         else{
             System.out.println("\nРынок ещё не построен.");
         }
-    }
-
-    public void getIncome(User player){
-        if (getWorkshop().getAmount() > 0) {
-            int earnedMoney = getWorkshop().makeProfit();
-            player.earnMoney(earnedMoney);
-            System.out.println("За этот раунд мастерские выплатили \u001B[33m" + earnedMoney + "\u001B[0m золотых монет.");
-        }
-        mill.payDebt(player);
     }
 
     public void createBuilding(User player){

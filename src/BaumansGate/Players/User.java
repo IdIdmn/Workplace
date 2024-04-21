@@ -16,12 +16,26 @@ public class User implements Player, Serializable {
     private LinkedList<Character> aimSymbols = new LinkedList<>();
     private HashMap<Character, Unit> team = new HashMap<>();
     private int money;
-    private int[] buildingResources = {20, 30};
-    private double fineDecrease = 0, grainAmount;
+    private int[] buildingResources;
+    private double fineDecrease, grainAmount;
     private Town town = new Town();
     private ArrayList<Unit> addedUnits = new ArrayList<>();
 
     public User(int money){
+        this.money = money;
+        buildingResources = new int[] {20, 30};
+        fineDecrease = 0;
+    }
+
+    public void setBuildingResources(int[] buildingResources) {
+        this.buildingResources = buildingResources;
+    }
+
+    public void setTeam(HashMap<Character, Unit> team) {
+        this.team = team;
+    }
+
+    public void setMoney(int money) {
         this.money = money;
     }
 
@@ -80,8 +94,7 @@ public class User implements Player, Serializable {
         System.out.println();
     }
 
-    public int chooseUnitIndex(){
-        Scanner in = new Scanner(System.in);
+    public int chooseUnitIndex(Scanner in){
         int unitNum;
         System.out.print("\tВыберите юнита: ");
         unitNum = in.nextInt();
@@ -89,14 +102,12 @@ public class User implements Player, Serializable {
         return unitNum;
     }
 
-    public int chooseUnitInitialPosition(Unit unit){
-        Scanner in = new Scanner(System.in);
+    public int chooseUnitInitialPosition(Unit unit, Scanner in){
         System.out.printf("Задайте стартовое значения столбца для <%s> : ", unit.getSymbol());
         return in.nextInt();
     }
 
-    public int chooseWay(){
-        Scanner in = new Scanner(System.in);
+    public int chooseWay(Scanner in){
         System.out.println("\nКакое действие вы желаете совершить?\n1 - Перемещение | 2 - Атака | 3 - Пропустить ход");
         System.out.print("Введите номер соответствующего действия: ");
         try {
@@ -107,52 +118,52 @@ public class User implements Player, Serializable {
         }
     }
 
-    public void fillTeam(boolean randomBuy){
-        int name = 0;
+    public void fillTeam(Scanner in){
+        int unitIndex;
         Unit chosenUnit;
-        if (randomBuy){
-            double unitIndex;
-            while (money >= 10 && team.size() <= 10){
-                unitIndex = 1 + Math.random() * (9 + addedUnits.size());
-                chosenUnit = createUnit((int)unitIndex,Character.toChars(name + 48)[0]);
-                while(money < chosenUnit.getCost()){
-                    unitIndex = 1 + Math.random() * (9 + addedUnits.size());
-                    chosenUnit = createUnit((int)unitIndex, Character.toChars(name + 48)[0]);
+        int name = 0;
+        System.out.println();
+        System.out.println("Доступны следующие классы:");
+        for (int i = 1; i < (10 + addedUnits.size()); i++){
+            chosenUnit = createUnit(i,' ');
+            System.out.println(i + chosenUnit.toString() + " | Цена: " + chosenUnit.getCost());
+        }
+        System.out.println();
+        while (money >= 10 && team.size() <= 10){
+            System.out.print("В вашем кошельке \u001B[33m" + money + "\u001B[0m золотых монет.");
+            unitIndex = chooseUnitIndex(in);
+            chosenUnit = createUnit(unitIndex, Character.toChars(name + 48)[0]);
+            while(money < chosenUnit.getCost()) {
+                System.out.print("Недостаточно денег на покупку данного юнита. Выберите кого-нибудь ещё.");
+                unitIndex = chooseUnitIndex(in);
+                chosenUnit = createUnit(unitIndex, Character.toChars(name + 48)[0]);
+            }
+            team.put(chosenUnit.getSymbol(), chosenUnit);
+            money -= chosenUnit.getCost();
+            name++;
+            if(money >= 10) {
+                System.out.print("Хватит? (+/-): ");
+                if (in.next().equals("+")) {
+                    return;
                 }
-                team.put(chosenUnit.getSymbol(), chosenUnit);
-                money -= chosenUnit.getCost();
-                name++;
             }
         }
-        else{
-            Scanner in = new Scanner(System.in);
-            int unitIndex;
-            System.out.println();
-            System.out.println("Доступны следующие классы:");
-            for (int i = 1; i < (10 + addedUnits.size()); i++){
-                chosenUnit = createUnit(i,' ');
-                System.out.println(i + chosenUnit.toString() + " | Цена: " + chosenUnit.getCost());
+    }
+
+    public void randomTeam(){
+        double unitIndex;
+        Unit chosenUnit;
+        int name = 0;
+        while (money >= 10 && team.size() <= 10){
+            unitIndex = 1 + Math.random() * (9 + addedUnits.size());
+            chosenUnit = createUnit((int)unitIndex,Character.toChars(name + 48)[0]);
+            while(money < chosenUnit.getCost()){
+                unitIndex = 1 + Math.random() * (9 + addedUnits.size());
+                chosenUnit = createUnit((int)unitIndex, Character.toChars(name + 48)[0]);
             }
-            System.out.println();
-            while (money >= 10 && team.size() <= 10){
-                System.out.print("В вашем кошельке \u001B[33m" + money + "\u001B[0m золотых монет.");
-                unitIndex = chooseUnitIndex();
-                chosenUnit = createUnit(unitIndex, Character.toChars(name + 48)[0]);
-                while(money < chosenUnit.getCost()) {
-                    System.out.print("Недостаточно денег на покупку данного юнита. Выберите кого-нибудь ещё.");
-                    unitIndex = chooseUnitIndex();
-                    chosenUnit = createUnit(unitIndex, Character.toChars(name + 48)[0]);
-                }
-                team.put(chosenUnit.getSymbol(), chosenUnit);
-                money -= chosenUnit.getCost();
-                name++;
-                if(money >= 10) {
-                    System.out.print("Хватит? (+/-): ");
-                    if (in.next().equals("+")) {
-                        return;
-                    }
-                }
-            }
+            team.put(chosenUnit.getSymbol(), chosenUnit);
+            money -= chosenUnit.getCost();
+            name++;
         }
     }
 
@@ -190,7 +201,7 @@ public class User implements Player, Serializable {
         }
     }
 
-    public void putUnits(Battlefield field , boolean randomPlace){
+    public void putUnits(Battlefield field , boolean randomPlace, Scanner in){
         int row = field.getLength() - 1;
         if (randomPlace){
             double column;
@@ -208,29 +219,29 @@ public class User implements Player, Serializable {
             System.out.println();
             int column;
             for (Character symbol : team.keySet()){
-                column = chooseUnitInitialPosition(team.get(symbol));
+                column = chooseUnitInitialPosition(team.get(symbol), in);
                 while (column >= field.getLength() || column < 0 || !field.getCell(new int[]{row, column}).isEmpty()){
                     System.out.println("Данная ячейка занята или находится за границами поля. Выберите другую.");
-                    column = chooseUnitInitialPosition(team.get(symbol));
+                    column = chooseUnitInitialPosition(team.get(symbol), in);
                 }
                 field.put(symbol, new int[] {row, column});
             }
         }
     }
 
-    public void playRound(Battlefield field, HashMap<Character, Unit> enemyTeam){
+    public void playRound(Battlefield field, HashMap<Character, Unit> enemyTeam, Scanner in){
         System.out.println();
         int chosenWay;
         for (Character symbol : team.keySet()) {
             System.out.println("\n\nХод юнита " + team.get(symbol).toString());
-            chosenWay = chooseWay();
+            chosenWay = chooseWay(in);
             while(chosenWay > 3 || chosenWay < 1){
                 System.out.println("\nБыл выбран символ, не соответствующий ни одной из предложенных опций.");
-                chosenWay = chooseWay();
+                chosenWay = chooseWay(in);
             }
             if (chosenWay != 3) {
                 while ((chosenWay == 1) ? !unitMove(field, team.get(symbol)) : !unitAttack(field, enemyTeam, aimSymbols, team.get(symbol))) {
-                    chosenWay = chooseWay();
+                    chosenWay = chooseWay(in);
                     System.out.println();
                     if(chosenWay == 3){
                         break;
@@ -253,7 +264,7 @@ public class User implements Player, Serializable {
         System.out.print("\nВведите координаты для перемещения в формате 'ряд столбец' : ");
         int row = in.nextInt(), column = in.nextInt();
         System.out.println();
-        while (!unit.move(new int[]{row, column},field,fineDecrease)){
+        while (!unit.move(new int[]{row, column},field, fineDecrease)){
             System.out.println("\nДанное поле не доступно для перемещения. Пожалуйста взгляните на карту и выберите одну из отмеченных клеток.");
             System.out.print("Введите координаты для перемещения в формате 'ряд столбец' : ");
             row = in.nextInt();
@@ -266,6 +277,7 @@ public class User implements Player, Serializable {
 
     public boolean unitAttack(Battlefield field, HashMap<Character, Unit> enemyTeam, LinkedList<Character> aimSymbols, Unit attackingUnit){
         System.out.println();
+        aimSymbols.clear();
         if (attackingUnit.canAttack(field, enemyTeam, aimSymbols)) {
             Display.makeGap();
             System.out.println("\tЯчейки доступные для проведения атаки");

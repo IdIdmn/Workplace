@@ -6,7 +6,7 @@ public class Hospital extends EnhancementBuilding {
 
     private String name = "Дом лекаря";
     private int level;
-    static private int amount = 0;
+    private int amount = 0;
     private int[] cost = {6, 8};
 
     @Override
