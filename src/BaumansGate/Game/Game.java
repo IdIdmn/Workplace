@@ -2,6 +2,7 @@ package BaumansGate.Game;
 
 import BaumansGate.Field.Battlefield;
 import BaumansGate.Output.Display;
+import BaumansGate.Output.GameLogger;
 import BaumansGate.Players.Bot;
 import BaumansGate.Players.User;
 import BaumansGate.Weather.Weather;
@@ -17,7 +18,7 @@ public class Game implements Serializable {
     private User player;
     private Bot enemyPlayer;
     private int currentRound, currentGame;
-    private String name = "Game";
+    private String name = "Save";
     private Weather gameWeather = new Weather();
 
     public Game(int money){
@@ -214,7 +215,7 @@ public class Game implements Serializable {
             turnOnCheats(in);
 
             // Создаёт имя файла, в который будет сохраняться прогресс конкретно этой игры
-            if (name.equals("Game")) {
+            if(name.equals("Save")) {
                 makeSaveName();
             }
 
@@ -227,11 +228,14 @@ public class Game implements Serializable {
             currentRound = 1;
         }
 
+        GameLogger.setLogFilePath("Logs\\" + name + ".log");
+        GameLogger.logInfo((currentRound == 1) ? String.format("Начата новая игра №%d", currentGame) : String.format("Загружена игра №%d", currentGame));
         Display.clear();
         System.out.printf("Игра №%d (Файл сохранения - %s)\n", currentGame, name);
         while (!player.isDefeated() && !enemyPlayer.isDefeated()) {
             saveGame();
             Display.makeGap();
+            GameLogger.logInfo(String.format("Раунд #%d",currentRound));
             System.out.println("Раунд " + currentRound + "\n");
             System.out.printf("\nУ вас сейчас \u001B[33m%d\u001B[0m монет, \u001B[35m%d\u001B[0m дерева, \u001B[35m%d\u001B[0m камня и \u001B[35m%.2f\u001B[0m зерна\n", player.getMoney(), player.getBuildingResources()[0], player.getBuildingResources()[1], player.getGrainAmount());
             player.feedYourTeam();
@@ -247,7 +251,7 @@ public class Game implements Serializable {
             gameWeather.decreaseRemain();
             gameWeather.randomWeather(this);
             player.getTown().getMarket().randomRates();
-            System.out.printf("\nВо время передышки ваши воины съели \u001B[35m%d\u001B[0m зерна\n", player.getTeam().size() * 2);
+            System.out.printf("\nВо время передышки ваши воины съели \u001B[35m%d\u001B[0m зерна\n\n", player.getTeam().size() * 2);
             player.getTown().getWorkshop().getIncome(player);
             player.getTown().getMill().payDebt(player);
             player.getTown().getMill().changeLevelOfDiscontent();
@@ -259,6 +263,7 @@ public class Game implements Serializable {
             System.out.println("\n\nВы выиграли.");
             player.earnMoney(10);
             player.earnResources(30,30);
+            GameLogger.logInfo("Игрок одержал победу.");
             System.out.println("Вы получили \u001B[33m10\u001B[0m монет, \u001B[35m30\u001B[0m дерева и \u001B[35m30\u001B[0m камня");
         }
         else{
@@ -269,6 +274,7 @@ public class Game implements Serializable {
                 System.out.println("\nЗапасы провизии полностью иссякли.");
             }
             System.out.println("\nВы проиграли.");
+            GameLogger.logSevere("Игрок потерпел поражение.");
         }
         System.out.println();
 

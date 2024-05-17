@@ -86,6 +86,8 @@ public class GameMenu {
         }
         File deleteFile = new File("Saves\\GameSaves\\" + filename + ".ser");
         deleteFile.delete();
+        deleteFile = new File("Logs\\" + filename + ".log");
+        deleteFile.delete();
     }
 
 }

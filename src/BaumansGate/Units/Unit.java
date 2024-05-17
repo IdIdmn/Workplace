@@ -1,6 +1,7 @@
 package BaumansGate.Units;
 
 import BaumansGate.Field.Battlefield;
+import BaumansGate.Output.GameLogger;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -74,6 +75,7 @@ public class Unit implements Serializable {
         else{
             defence -= takenDamage;
         }
+        GameLogger.logInfo(String.format("Юнит <%s> получил %d урона. Осталось: %d ХП и %d брони.", symbol, takenDamage, Math.max(0, healthPoints), defence));
     }
 
     public void buff(int healthPointsBuff,int damageBuff, int attackRangeBuff, int defenceBuff, int moveRangeBuff){
@@ -91,6 +93,7 @@ public class Unit implements Serializable {
     public void death(HashMap<Character, Unit> team, Battlefield field){
         field.remove(symbol);
         team.remove(symbol, this);
+        GameLogger.logSevere(String.format("Юнит <%s> был повержен.", symbol));
     }
 
     public boolean isEnemy(char otherUnitSymbol){
@@ -106,6 +109,7 @@ public class Unit implements Serializable {
         }
         field.remove(symbol);
         field.put(symbol, newPosition);
+        GameLogger.logInfo(String.format("Юнит <%s> переместился на клетку [%d,%d]", symbol, newPosition[0], newPosition[1]));
         return true;
     }
 
@@ -122,6 +126,7 @@ public class Unit implements Serializable {
 
     public void attack(Unit enemyUnit){
         enemyUnit.takeDamage(damage);
+        GameLogger.logInfo(String.format("Юнит <%s> атаковал <%s>, нанеся %d урона.", symbol, enemyUnit.getSymbol(), damage));
     }
 
     @Override

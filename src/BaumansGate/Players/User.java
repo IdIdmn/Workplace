@@ -2,7 +2,7 @@ package BaumansGate.Players;
 
 import BaumansGate.Buildings.Town;
 import BaumansGate.Field.Battlefield;
-import BaumansGate.Output.Display;
+import BaumansGate.Output.*;
 import BaumansGate.Units.*;
 
 import java.io.Serializable;
@@ -63,6 +63,13 @@ public class User implements Player, Serializable {
         this.grainAmount = grainAmount;
     }
 
+    public void earnGrain(double earnedGrain){
+        grainAmount += earnedGrain;
+        if(earnedGrain > 0){
+            GameLogger.logInfo(String.format("Получено %.2f зерна.",earnedGrain));
+        }
+    }
+
     @Override
     public double getFineDecrease() {
         return fineDecrease;
@@ -79,10 +86,14 @@ public class User implements Player, Serializable {
     public void earnResources(int earnedWood, int earnedRocks){
         buildingResources[0] += earnedWood;
         buildingResources[1] += earnedRocks;
+        GameLogger.logInfo(String.format("Получено %d дерева и %d камней.", earnedWood, earnedRocks));
     }
 
     public void earnMoney(int earnedMoney){
         money += earnedMoney;
+        if(earnedMoney > 0){
+            GameLogger.logInfo(String.format("Получено %d монет.",earnedMoney));
+        }
     }
 
     public void printTeamState(){

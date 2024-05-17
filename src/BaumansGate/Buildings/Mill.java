@@ -1,6 +1,7 @@
 package BaumansGate.Buildings;
 
 import BaumansGate.Output.Display;
+import BaumansGate.Output.GameLogger;
 import BaumansGate.Players.User;
 
 import java.io.Serializable;
@@ -24,6 +25,7 @@ public class Mill implements Serializable {
     }
 
     public void changeLevelOfDiscontent(){
+        int previousDiscontentValue = levelOfDiscontent;
         if (taxes < 15){
             levelOfDiscontent = Math.max(levelOfDiscontent - 10, 0);
         }
@@ -41,6 +43,12 @@ public class Mill implements Serializable {
         }
         else {
             levelOfDiscontent += 35;
+        }
+        if(previousDiscontentValue <= 50 && levelOfDiscontent > 50){
+            GameLogger.logWarning("Уровень недовольства крестьян перешагнул через отметку 50%.");
+        }
+        else if(previousDiscontentValue <= 85 && levelOfDiscontent > 85){
+            GameLogger.logSevere("Уровень недовольства крестьян превысил 85%.");
         }
     }
 
@@ -67,14 +75,16 @@ public class Mill implements Serializable {
 
     public void setTaxes(int newTax){
         taxes = newTax;
+        GameLogger.logInfo(String.format("Был установлен новый размер налога: %d", newTax) + "%.");
     }
 
     public void payDebt(User user){
         int earnedMoney = (int)Math.log(maxAmountOfGrainPerRound * taxes) * 2 + (int)maxAmountOfGrainPerRound * taxes * 4 / 100 ;
         double earnedGrain = maxAmountOfGrainPerRound * (100 - taxes) / 100;
-        user.setGrainAmount(user.getGrainAmount() + earnedGrain);
+        user.earnGrain(earnedGrain);
         user.earnMoney(earnedMoney);
         System.out.printf("\nЗа этот раунд крестьяне выплатили \u001B[35m%.2f\u001B[0m зерна и \u001B[33m%d\u001B[0m золотых монет.\n", earnedGrain, earnedMoney);
+
     }
 
     public void tryToRunRiot(User user){
