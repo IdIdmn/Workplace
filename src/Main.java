@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        GameMenu.startAdventure(new Game(30));
+        GameMenu.startAdventure(new Game(30, 20, 30));
 
     }
 }

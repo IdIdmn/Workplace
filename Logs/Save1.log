@@ -1,0 +1,56 @@
+мая 18, 2024 3:08:37 PM BaumansGate.Output.GameLogger logInfo
+INFO: Начата новая игра №1
+мая 18, 2024 3:08:37 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #1
+мая 18, 2024 3:08:47 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <0> пропустил ход.
+мая 18, 2024 3:08:47 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <a> переместился на клетку [1,14]
+мая 18, 2024 3:08:47 PM BaumansGate.Output.GameLogger logInfo
+INFO: Получено 4,00 зерна.
+мая 18, 2024 3:08:47 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #2
+мая 18, 2024 3:08:48 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <0> пропустил ход.
+мая 18, 2024 3:08:48 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <a> переместился на клетку [2,14]
+мая 18, 2024 3:08:48 PM BaumansGate.Output.GameLogger logInfo
+INFO: Получено 4,00 зерна.
+мая 18, 2024 3:08:48 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #3
+мая 18, 2024 3:11:00 PM BaumansGate.Output.GameLogger logInfo
+INFO: Загружена игра №1
+мая 18, 2024 3:11:00 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #3
+мая 18, 2024 3:12:39 PM BaumansGate.Output.GameLogger logInfo
+INFO: Загружена игра №1
+мая 18, 2024 3:12:39 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #3
+мая 18, 2024 3:12:47 PM BaumansGate.Output.GameLogger logInfo
+INFO: Был установлен новый размер налога: 100%.
+мая 18, 2024 3:13:07 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <0> переместился на клетку [7,8]
+мая 18, 2024 3:13:07 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <a> переместился на клетку [5,14]
+мая 18, 2024 3:13:07 PM BaumansGate.Output.GameLogger logInfo
+INFO: Получено 26 монет.
+мая 18, 2024 3:13:07 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #4
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <a> получил 1007 урона. Осталось: 0 ХП и 0 брони.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <0> атаковал <a>, нанеся 1007 урона.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logSevere
+SEVERE: Юнит <a> был повержен.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logInfo
+INFO: Получено 5 монет.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logInfo
+INFO: Получено 8 дерева и 8 камней.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logInfo
+INFO: Получено 26 монет.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logWarning
+WARNING: С текущим налогом еда закончится через ход.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logWarning
+WARNING: Уровень недовольства крестьян перешагнул через отметку 50%.
+мая 18, 2024 3:13:16 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #5

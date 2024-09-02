@@ -83,14 +83,17 @@ public class Mill implements Serializable {
         double earnedGrain = maxAmountOfGrainPerRound * (100 - taxes) / 100;
         user.earnGrain(earnedGrain);
         user.earnMoney(earnedMoney);
+        if(earnedGrain * 2 + user.getGrainAmount() - 2 * 2 * user.getTeam().size() <= 0){
+            GameLogger.logWarning("С текущим налогом еда закончится через ход.");
+        }
         System.out.printf("\nЗа этот раунд крестьяне выплатили \u001B[35m%.2f\u001B[0m зерна и \u001B[33m%d\u001B[0m золотых монет.\n", earnedGrain, earnedMoney);
-
     }
 
     public void tryToRunRiot(User user){
         if (levelOfDiscontent >= 100) {
             user.setGrainAmount(0);
             System.out.print("\nКрестьяне устроили бунт и сожгли все ваши запасы зерна.");
+            GameLogger.logSevere("Крестьяне взбунстовались и сожгли припасы.");
             Display.makeGap();
         }
     }

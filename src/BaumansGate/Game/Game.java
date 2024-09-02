@@ -21,9 +21,9 @@ public class Game implements Serializable {
     private String name = "Save";
     private Weather gameWeather = new Weather();
 
-    public Game(int money){
+    public Game(int money, int wood, int rocks){
         amountOfMoney = money;
-        player = new User(amountOfMoney);
+        player = new User(amountOfMoney, wood, rocks);
         enemyPlayer = new Bot(amountOfMoney);
         currentGame = 1;
     }
@@ -251,7 +251,7 @@ public class Game implements Serializable {
             gameWeather.decreaseRemain();
             gameWeather.randomWeather(this);
             player.getTown().getMarket().randomRates();
-            System.out.printf("\nВо время передышки ваши воины съели \u001B[35m%d\u001B[0m зерна\n\n", player.getTeam().size() * 2);
+            System.out.printf("\nВо время передышки ваши воины съели \u001B[35m%d\u001B[0m зерна\n", player.getTeam().size() * 2);
             player.getTown().getWorkshop().getIncome(player);
             player.getTown().getMill().payDebt(player);
             player.getTown().getMill().changeLevelOfDiscontent();

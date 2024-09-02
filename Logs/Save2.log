@@ -1,0 +1,16 @@
+июн. 14, 2024 2:10:26 PM BaumansGate.Output.GameLogger logInfo
+INFO: Начата новая игра №1
+июн. 14, 2024 2:10:26 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #1
+июн. 14, 2024 2:10:44 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <0> переместился на клетку [6,6]
+июн. 14, 2024 2:10:54 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <1> пропустил ход.
+июн. 14, 2024 2:10:54 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <a> переместился на клетку [1,7]
+июн. 14, 2024 2:10:54 PM BaumansGate.Output.GameLogger logInfo
+INFO: Юнит <b> переместился на клетку [6,0]
+июн. 14, 2024 2:10:54 PM BaumansGate.Output.GameLogger logInfo
+INFO: Получено 8,00 зерна.
+июн. 14, 2024 2:10:54 PM BaumansGate.Output.GameLogger logInfo
+INFO: Раунд #2

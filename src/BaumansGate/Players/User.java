@@ -21,9 +21,9 @@ public class User implements Player, Serializable {
     private Town town = new Town();
     private ArrayList<Unit> addedUnits = new ArrayList<>();
 
-    public User(int money){
+    public User(int money, int wood, int rocks){
         this.money = money;
-        buildingResources = new int[] {20, 30};
+        buildingResources = new int[] {wood, rocks};
         fineDecrease = 0;
     }
 
@@ -255,9 +255,13 @@ public class User implements Player, Serializable {
                     chosenWay = chooseWay(in);
                     System.out.println();
                     if(chosenWay == 3){
+                        GameLogger.logInfo(String.format("Юнит <%s> пропустил ход.", symbol));
                         break;
                     }
                 }
+            }
+            else {
+                GameLogger.logInfo(String.format("Юнит <%s> пропустил ход.", symbol));
             }
         }
         Display.makeGap();
